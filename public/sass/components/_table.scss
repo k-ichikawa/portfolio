@@ -35,7 +35,7 @@
 			line-height: 1.5;
 			padding: 0 0.75rem 0.75rem 0.75rem;
 			text-align: left;
-			text-transform: uppercase;
+			text-transform: none;
 
 			@include breakpoint('<=medium') {
 				font-size: 0.9rem;

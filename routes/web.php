@@ -12,5 +12,17 @@
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('app');
+});
+
+Route::get('/works', function () {
+    return view('app');
+});
+
+Route::get('/private', function () {
+    return view('app');
+});
+
+Route::get('/contact', function () {
+    return view('app');
 });

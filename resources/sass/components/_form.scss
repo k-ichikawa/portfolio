@@ -75,7 +75,7 @@
 		line-height: 1.5;
 		letter-spacing: 0.075em;
 		font-size: 0.8rem;
-		text-transform: uppercase;
+		text-transform: none;
 		margin: 0 0 (_size(element-margin) * 0.375) 0;
 
 		@include breakpoint('<=medium') {
