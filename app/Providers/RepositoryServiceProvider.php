@@ -15,5 +15,6 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind('InstagramUserRepository', \App\Repositories\InstagramUserRepository::class);
         $this->app->bind('InstagramUserPostRepository', \App\Repositories\InstagramUserPostRepository::class);
+        $this->app->bind('InquiryRepository', \App\Repositories\InquiryRepository::class);
     }
 }

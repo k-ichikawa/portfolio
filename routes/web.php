@@ -26,3 +26,6 @@ Route::get('/private', function () {
 Route::get('/contact', function () {
     return view('app');
 });
+
+Route::get('/get-instagram-images', 'PrivateController@getInstagramPosts');
+Route::post('/send-message', 'ContactController@sendMessage');

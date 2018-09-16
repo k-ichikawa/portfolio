@@ -239,7 +239,8 @@ input, select, textarea {
 	blockquote {
 		border-left: solid 4px;
 		font-style: italic;
-		margin: 0 0 2rem 0;
+		font-size: 75%;
+		margin: 10px 0 2rem 20px;
 		padding: 0.5rem 0 0.5rem 2rem;
 	}
 

@@ -6,7 +6,7 @@ use App\Repositories\InstagramUserPostRepository;
 use App\Repositories\InstagramUserRepository;
 use Illuminate\Routing\Controller as BaseController;
 
-class HobbyController extends BaseController
+class PrivateController extends BaseController
 {
     /** @var InstagramUserRepository  */
     protected $instagramUserRepository;
@@ -22,8 +22,15 @@ class HobbyController extends BaseController
         $this->instagramUserPostRepository = $instagramUserPostRepository;
     }
 
+    /**
+     * @return false|string
+     */
     public function getInstagramPosts()
     {
+        $instagram_user = $this->instagramUserRepository->find(1);
 
+        $instagram_user_posts = $this->instagramUserPostRepository->findRecentPostsByUserId($instagram_user->id);
+
+        return json_encode($instagram_user_posts);
     }
 }
