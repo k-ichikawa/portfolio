@@ -9,6 +9,12 @@
     <title>Icchy Profile</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta property="og:title" content="icchy profile" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="市川のプロフィールです。" />
+    <meta property="og:url" content="{{ route('app') }}" />
+    <meta property="og:site_name" content="icchy profile" />
+    <meta property="og:image" content="{{ asset('images/ogimage.jpg') }}" />
     <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
     <link rel="icon" href="{{ asset('images/favicon.ico') }}">
     <noscript><link rel="stylesheet" href="{{ asset('css/noscript.css') }}" /></noscript>

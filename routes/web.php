@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/', 'Controller@showAbout');
+Route::get('/', 'Controller@showAbout')->name('app');
 Route::get('/works', 'Controller@showWorks');
 Route::get('/private', 'Controller@showPrivate');
 Route::get('/contact', 'Controller@showContact');
