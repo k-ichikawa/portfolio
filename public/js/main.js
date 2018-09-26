@@ -146,6 +146,12 @@
 			$navPanel = $(
 				'<div id="navPanel">' +
 					'<nav>' +
+					'<ul class="links">' +
+					'<li><a href="/" class="">About</a></li>' +
+					'<li><a href="/works" class="">Works</a></li>' +
+					'<li><a href="/private" class="">Private</a></li>' +
+					'<li><a href="/contact" class="">Contact</a></li>' +
+					'</ul>' +
 					'</nav>' +
 					'<a href="#navPanel" class="close"></a>' +
 				'</div>'
