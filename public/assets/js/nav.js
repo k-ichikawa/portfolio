@@ -15573,7 +15573,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -15584,6 +15584,12 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -15690,7 +15696,9 @@ var render = function() {
     _vm._v(" "),
     _vm._m(1),
     _vm._v(" "),
-    _vm._m(2)
+    _vm._m(2),
+    _vm._v(" "),
+    _vm._m(3)
   ])
 }
 var staticRenderFns = [
@@ -15802,6 +15810,23 @@ var staticRenderFns = [
           ])
         ])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("article", [
+      _c("h2", [_vm._v("BLOG")]),
+      _vm._v(" "),
+      _c("p", [
+        _c("a", {
+          attrs: { href: "https://icchy.hatenadiary.jp/", target: "_blank" }
+        }),
+        _vm._v("kenta's diary")
+      ]),
+      _vm._v(" "),
+      _c("p", [_vm._v("テックな事、日常の事を記事にしています。")])
     ])
   }
 ]

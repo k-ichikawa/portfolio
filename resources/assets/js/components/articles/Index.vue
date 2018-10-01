@@ -60,6 +60,12 @@
                 </div>
             </div>
         </article>
+
+        <article>
+            <h2>BLOG</h2>
+            <p><a href="https://icchy.hatenadiary.jp/" target="_blank"></a>kenta's diary</p>
+            <p>テックな事、日常の事を記事にしています。</p>
+        </article>
     </div>
 </template>
 
