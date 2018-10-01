@@ -15820,10 +15820,13 @@ var staticRenderFns = [
       _c("h2", [_vm._v("BLOG")]),
       _vm._v(" "),
       _c("p", [
-        _c("a", {
-          attrs: { href: "https://icchy.hatenadiary.jp/", target: "_blank" }
-        }),
-        _vm._v("kenta's diary")
+        _c(
+          "a",
+          {
+            attrs: { href: "https://icchy.hatenadiary.jp/", target: "_blank" }
+          },
+          [_vm._v("kenta's diary")]
+        )
       ]),
       _vm._v(" "),
       _c("p", [_vm._v("テックな事、日常の事を記事にしています。")])
