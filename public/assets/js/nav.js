@@ -15573,7 +15573,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -15584,9 +15584,6 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
 //
 //
 //
@@ -15727,8 +15724,6 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("tbody", [
             _c("tr", [
-              _c("td", [_vm._v("2011/04 "), _c("br"), _vm._v("~ 2016/03")]),
-              _vm._v(" "),
               _c("td", [
                 _vm._v("専修大学"),
                 _c("br"),
@@ -15745,8 +15740,6 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("tr", [
-              _c("td", [_vm._v("2014/08 "), _c("br"), _vm._v("~ 2015/07")]),
-              _vm._v(" "),
               _c("td", [
                 _vm._v("株式会社ココラブル"),
                 _c("br"),
@@ -15761,8 +15754,6 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("tr", [
-              _c("td", [_vm._v("2016/04 ~ ")]),
-              _vm._v(" "),
               _c("td", [
                 _vm._v("アライドアーキテクツ株式会社"),
                 _c("br"),
@@ -16318,7 +16309,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -16335,6 +16326,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_axios__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_axios__);
+//
 //
 //
 //
@@ -17377,7 +17369,7 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("tbody", [
             _c("tr", [
-              _c("td", [_vm._v("1999 ~ 2005 小学生時代")]),
+              _c("td", [_vm._v("小学生時代")]),
               _vm._v(" "),
               _c("td", [
                 _vm._v(
@@ -17387,7 +17379,7 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("tr", [
-              _c("td", [_vm._v("2005 ~ 2008 中学生時代")]),
+              _c("td", [_vm._v("中学生時代")]),
               _vm._v(" "),
               _c("td", [
                 _vm._v(
@@ -17395,7 +17387,11 @@ var staticRenderFns = [
                 ),
                 _c("br"),
                 _vm._v(
-                  "戦国BASARAやドラクエにハマり徹ゲーを覚えてしまう。デュエルマスターズにもハマり、カードゲームの楽しさを知る。\n                        "
+                  "戦国BASARAやドラクエにハマり徹ゲーを覚えてしまう。\n                        "
+                ),
+                _c("br"),
+                _vm._v(
+                  "デュエルマスターズにもハマり、カードゲームの楽しさを知る。\n                        "
                 ),
                 _c("br"),
                 _vm._v(
@@ -17407,7 +17403,7 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("tr", [
-              _c("td", [_vm._v("2008 ~ 2011 高校生時代")]),
+              _c("td", [_vm._v("高校生時代")]),
               _vm._v(" "),
               _c("td", [
                 _vm._v(
@@ -17425,7 +17421,7 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("tr", [
-              _c("td", [_vm._v("2011 ~ 2014 大学生時代（前）")]),
+              _c("td", [_vm._v("大学生時代（前）")]),
               _vm._v(" "),
               _c("td", [
                 _vm._v(
@@ -17439,7 +17435,7 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("tr", [
-              _c("td", [_vm._v("2015 ~ 2016 大学生時代（後）")]),
+              _c("td", [_vm._v("大学生時代（後）")]),
               _vm._v(" "),
               _c("td", [
                 _vm._v(
@@ -17453,7 +17449,7 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("tr", [
-              _c("td", [_vm._v("2016 ~ 現在 社会人")]),
+              _c("td", [_vm._v("社会人")]),
               _vm._v(" "),
               _c("td", [
                 _vm._v(
