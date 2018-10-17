@@ -9,7 +9,8 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         { path: '/', component: require('../articles/Index.vue') },
-        { path: '/works', component: require('../articles/Works.vue') },
+        { path: '/about', component: require('../articles/About.vue') },
+        { path: '/history', component: require('../articles/History.vue') },
         { path: '/private', component: require('../articles/Private.vue') },
         { path: '/contact', component: require('../articles/Contact.vue') },
     ]

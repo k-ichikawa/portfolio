@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>icchy Profile</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<meta property="og:title" content="icchy profile" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="市川のプロフィールです。" />
+    <meta property="og:url" content="" />
+    <meta property="og:site_name" content="icchy profile" />
+    <meta property="og:image" content="" />
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|EB+Garamond" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="icon" href="">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+	<div class="head">
+		<div class="headInner">
+			<div class="headerBox">
+				<div class="siteName">
+					<h1><a href="#">icchy Profile</a></h1>
+				</div>
+			</div>
+			<div class="navBox">
+				<a href="javascript:void(0)" type="button" id="menuBtn">
+					<i class="fas fa-bars"></i>
+				</a>
+				<nav class="menu">
+					<ul>
+						<li>
+							<a href="#">TOP</a>
+						</li>
+						<li>
+							<a href="#">ABOUT</a>
+						</li>
+						<li>
+							<a href="#">HISTORY</a>
+						</li>
+						<li>
+							<a href="#">PRIVATE</a>
+						</li>
+						<li>
+							<a href="#">CONTACT</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<div class="articleBox">
+		<article>
+			<img src="images/about_image.jpg" alt="">
+			<h1>ABOUT</h1>
+			<div class="explain">
+				<h2>市川 健太（イチカワ ケンタ）</h2>
+				<p class="sentence">93年2月生, B型, 千葉県出身, 神奈川県在住</p>
+				<p class="sentence">"イッチー", "ケンシロー"などと呼ばれている。webエンジニア</p>
+
+				<h2>Skill</h2>
+				<p class="sentence">Work：PHP（Laravel）, javascript（Vue, jQuery）</p>
+				<p class="sentence">Hobby：Ruby（Rails）, Google Apps Script</p>
+			</div>
+		</article>
+	</div>
+	<div class="footerBox">
+		<div class="footerInner">
+			<div class="copyright">
+				<p>Copyright &copy icchy Profile
+			</div>
+		</div>
+	</div>
+	<script>
+    	$('#menuBtn').click( function() {
+    		$('.menu').slideToggle();
+    	});
+    </script>
+</body>
+</html>

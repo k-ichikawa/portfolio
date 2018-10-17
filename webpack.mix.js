@@ -11,9 +11,6 @@ const mix = require('laravel-mix');
  |
  */
 mix.copy('resources/css', 'public/css');
-mix.copy('resources/fonts', 'public/fonts');
 mix.copy('resources/images', 'public/images');
-mix.copy('resources/sass', 'public/sass');
-mix.copy('resources/js', 'public/js');
 
 mix.js('resources/assets/js/components/nav/nav.js', 'public/assets/js');

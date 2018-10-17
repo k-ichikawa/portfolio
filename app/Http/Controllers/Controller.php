@@ -11,12 +11,17 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public function showIndex()
+    {
+        return view('app');
+    }
+
     public function showAbout()
     {
         return view('app');
     }
 
-    public function showWorks()
+    public function showHistory()
     {
         return view('app');
     }

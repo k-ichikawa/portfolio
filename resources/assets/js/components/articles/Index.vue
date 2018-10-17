@@ -1,68 +1,99 @@
 <template>
     <div id="main">
-        <article>
-            <h2>PROFILE</h2>
-            <h3>市川 健太 (イチカワ ケンタ)</h3>
-            <p>93年2月生まれ、B型、千葉県出身、神奈川県在住。<br />"イッチー", "ケンシロー"などと呼ばれている。webエンジニア。</p>
-            <a href="javascript:void(0)" class="image main"><img :src="profile_image" alt="profile" /></a>
-        </article>
-
-        <article>
-            <h2>BIOGRAPHY</h2>
-
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>専修大学<br />経営学部 経営学科</td>
-                        <td>マーケティング × ITを研究するゼミに所属。趣味でサークルの立ち上げ等。<br />友人に教えてもらいながら独学でプログラミングを学ぶ。</td>
-                    </tr>
-                    <tr>
-                        <td>株式会社ココラブル<br />インターンシップ</td>
-                        <td>データ分析・企画職として入社。分析効率化のためプログラミングを勉強し実践。</td>
-                    </tr>
-                    <tr>
-                        <td>アライドアーキテクツ株式会社<br />エンジニア職</td>
-                        <td>ユーザーグロース、システム運用、新規サービス開発に従事。</td>
-                    </tr>
-                    </tbody>
-                </table>
+        <div class="contentBox">
+            <div class="content">
+                <img class="profileImage" :src="profile_image" alt="">
             </div>
-        </article>
-
-        <article>
-            <h2>SKILL</h2>
-            <div class="row">
-                <div class="col-6 col-12-small">
-                    <h3>work</h3>
-                    <ul>
-                        <li>PHP（Laravel）</li>
-                        <li>Vue.js</li>
-                        <li>jQuery</li>
-                    </ul>
-                </div>
-                <div class="col-6 col-12-small">
-                    <h3>hobby</h3>
-                    <ul>
-                        <li>Ruby（Rails）</li>
-                        <li>Google Apps Script</li>
-                    </ul>
+        </div>
+        <div class="overviewBox">
+            <div class="overview1">
+                <div class="overviewContent">
+                    <a href="/about">
+                        <i class="fas fa-user-alt"></i>
+                        <h1>ABOUT</h1>
+                        <p>私についての概要</p>
+                    </a>
                 </div>
             </div>
-        </article>
-
-        <article>
-            <h2>BLOG</h2>
-            <p><a href="https://icchy.hatenadiary.jp/" target="_blank">kenta's diary</a></p>
-            <p>テックな事、日常の事を記事にしています。</p>
-        </article>
+            <div class="overview2">
+                <div class="overviewContent">
+                    <a href="/history">
+                        <i class="fas fa-laptop"></i>
+                        <h1>HISTORY</h1>
+                        <p>学歴・職歴</p>
+                    </a>
+                </div>
+            </div>
+            <div class="overview3">
+                <div class="overviewContent">
+                    <a href="/private">
+                        <i class="fas fa-gamepad"></i>
+                        <h1>PRIVATE</h1>
+                        <p>プライベートの略歴</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="newsListBox">
+            <div class="overNews">
+                <div class="news">
+                    <ul>
+                        <h1>NEWS</h1>
+                        <li>
+                            <a href="/" target="_blank">
+                                <time datetime="2018-10-17">10/17</time>
+                                <div class="newsTitle">当サイトのUIをリニューアルしました。</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://icchy.hatenadiary.jp/entry/2018/10/14/220740" target="_blank">
+                                <time datetime="2018-10-14">10/14</time>
+                                <div class="newsTitle">ブログで近況を更新しました。</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/" target="_blank">
+                                <time datetime="2018-10-01">10/01</time>
+                                <div class="newsTitle">サイトを公開しました。</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="snsList">
+                <div class="snsInfo">こちらでも更新しています。
+                    <div class="triangle"></div>
+                </div>
+                <ul>
+                    <li class="facebookBtn">
+                        <a href="https://www.facebook.com/icchy.kenshiro" class="facebook" target="_blank">
+                            <i class="fab fa-facebook-square"></i>
+                            Facebook
+                        </a>
+                    </li>
+                    <li class="instagramBtn">
+                        <a href="https://www.instagram.com/icchy1902/" class="instagram" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                            Instagram
+                        </a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="gitHubBtn">
+                        <a href="https://github.com/k-ichikawa" class="github" target="_blank">
+                            <i class="fab fa-github"></i>
+                            gitHub
+                        </a>
+                    </li>
+                    <li class="blogBtn">
+                        <a href="https://icchy.hatenadiary.jp/" class="blog" target="_blank">
+                            <i class="fas fa-pen-square"></i>
+                            blog
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -71,12 +102,8 @@
         name: "Index",
         data () {
             return {
-                profile_image: require("../../../../images/profile.jpg")
+                profile_image: require("../../../../images/profile_image.jpg")
             }
         }
     }
 </script>
-
-<style scoped>
-
-</style>

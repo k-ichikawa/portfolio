@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>icchy Profile</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<meta property="og:title" content="icchy profile" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="市川のプロフィールです。" />
+    <meta property="og:url" content="" />
+    <meta property="og:site_name" content="icchy profile" />
+    <meta property="og:image" content="" />
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|EB+Garamond" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="icon" href="">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+	<div class="head">
+		<div class="headInner">
+			<div class="headerBox">
+				<div class="siteName">
+					<h1><a href="#">icchy Profile</a></h1>
+				</div>
+			</div>
+			<div class="navBox">
+				<a href="javascript:void(0)" type="button" id="menuBtn">
+					<i class="fas fa-bars"></i>
+				</a>
+				<nav class="menu">
+					<ul>
+						<li>
+							<a href="#">TOP</a>
+						</li>
+						<li>
+							<a href="#">ABOUT</a>
+						</li>
+						<li>
+							<a href="#">HISTORY</a>
+						</li>
+						<li>
+							<a href="#">PRIVATE</a>
+						</li>
+						<li>
+							<a href="#">CONTACT</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<div class="articleBox">
+		<article>
+			<h1>CONTACT</h1>
+			<div class="explain">
+				<div class="name">
+					<h3>お名前</h3>
+					<input type="text" class="inputText">
+				</div>
+				<div class="mailAddress">
+					<h3>メールアドレス</h3>
+					<input type="email" class="inputText">
+				</div>
+				<div class="message">
+					<h3>メッセージ</h3>
+					<textarea rows="3"></textarea>
+				</div>
+				<div class="submitButton">
+					<input type="submit" value="送信" class="button">
+				</div>
+			</div>
+		</article>
+	</div>
+	<div class="footerBox">
+		<div class="footerInner">
+			<div class="copyright">
+				<p>Copyright &copy icchy Profile
+			</div>
+		</div>
+	</div>
+	<script>
+    	$('#menuBtn').click( function() {
+    		$('.menu').slideToggle();
+    	});
+    </script>
+</body>
+</html>

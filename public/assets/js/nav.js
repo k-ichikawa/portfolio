@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,8 +70,8 @@
 "use strict";
 
 
-var bind = __webpack_require__(10);
-var isBuffer = __webpack_require__(44);
+var bind = __webpack_require__(7);
+var isBuffer = __webpack_require__(33);
 
 /*global toString:true*/
 
@@ -377,316 +377,6 @@ module.exports = {
 /* 1 */
 /***/ (function(module, exports) {
 
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(24)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-var options = null
-var ssrIdKey = 'data-vue-ssr-id'
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction, _options) {
-  isProduction = _isProduction
-
-  options = _options || {}
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-  if (options.ssrId) {
-    styleElement.setAttribute(ssrIdKey, obj.id)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file.
@@ -793,7 +483,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 4 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11756,10 +11446,10 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(18).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(15).setImmediate))
 
 /***/ }),
-/* 5 */
+/* 3 */
 /***/ (function(module, exports) {
 
 var g;
@@ -11786,14 +11476,14 @@ module.exports = g;
 
 
 /***/ }),
-/* 6 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(46);
+var normalizeHeaderName = __webpack_require__(35);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -11809,10 +11499,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(11);
+    adapter = __webpack_require__(8);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(11);
+    adapter = __webpack_require__(8);
   }
   return adapter;
 }
@@ -11887,10 +11577,10 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 7 */
+/* 5 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -12080,19 +11770,13 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/comment_plugin_01.jpg?14b63c3b1209006315174a6ae1ec7962";
-
-/***/ }),
-/* 9 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(43);
+module.exports = __webpack_require__(32);
 
 /***/ }),
-/* 10 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12110,19 +11794,19 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 11 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var settle = __webpack_require__(47);
-var buildURL = __webpack_require__(49);
-var parseHeaders = __webpack_require__(50);
-var isURLSameOrigin = __webpack_require__(51);
-var createError = __webpack_require__(12);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(52);
+var settle = __webpack_require__(36);
+var buildURL = __webpack_require__(38);
+var parseHeaders = __webpack_require__(39);
+var isURLSameOrigin = __webpack_require__(40);
+var createError = __webpack_require__(9);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(41);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -12219,7 +11903,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(53);
+      var cookies = __webpack_require__(42);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -12297,13 +11981,13 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 12 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(48);
+var enhanceError = __webpack_require__(37);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -12322,7 +12006,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 13 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12334,7 +12018,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 14 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12360,7 +12044,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 15 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12368,22 +12052,22 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof="fun
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):window.Vue&&window.axios&&Vue.use(o,window.axios)}();
 
 /***/ }),
-/* 16 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(17);
+module.exports = __webpack_require__(14);
 
 
 /***/ }),
-/* 17 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Nav_vue__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Nav_vue__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Nav_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__Nav_vue__);
 
 
@@ -12394,7 +12078,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('nav-component', __WEBPACK
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     mode: 'history',
-    routes: [{ path: '/', component: __webpack_require__(26) }, { path: '/works', component: __webpack_require__(32) }, { path: '/private', component: __webpack_require__(39) }, { path: '/contact', component: __webpack_require__(62) }]
+    routes: [{ path: '/', component: __webpack_require__(20) }, { path: '/about', component: __webpack_require__(24) }, { path: '/history', component: __webpack_require__(28) }, { path: '/private', component: __webpack_require__(30) }, { path: '/contact', component: __webpack_require__(51) }]
 });
 
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
@@ -12403,7 +12087,7 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 });
 
 /***/ }),
-/* 18 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -12459,7 +12143,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(19);
+__webpack_require__(16);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -12470,10 +12154,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 19 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -12663,10 +12347,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(5)))
 
 /***/ }),
-/* 20 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15296,25 +14980,21 @@ if (inBrowser && window.Vue) {
 
 
 /***/ }),
-/* 21 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(22)
-}
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(25)
+var __vue_template__ = __webpack_require__(19)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
-var __vue_scopeId__ = "data-v-c7ab0260"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -15347,80 +15027,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(23);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("8a3a0b54", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c7ab0260\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Nav.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c7ab0260\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Nav.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports) {
-
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-module.exports = function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-
-/***/ }),
-/* 25 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -15434,7 +15041,7 @@ var render = function() {
         _c(
           "router-link",
           { attrs: { to: "/", "exact-active-class": "active" } },
-          [_vm._v("About")]
+          [_vm._v("TOP")]
         )
       ],
       1
@@ -15445,8 +15052,20 @@ var render = function() {
       [
         _c(
           "router-link",
-          { attrs: { to: "/works", "exact-active-class": "active" } },
-          [_vm._v("Works")]
+          { attrs: { to: "/about", "exact-active-class": "active" } },
+          [_vm._v("ABOUT")]
+        )
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "li",
+      [
+        _c(
+          "router-link",
+          { attrs: { to: "/history", "exact-active-class": "active" } },
+          [_vm._v("HISTORY")]
         )
       ],
       1
@@ -15458,7 +15077,7 @@ var render = function() {
         _c(
           "router-link",
           { attrs: { to: "/private", "exact-active-class": "active" } },
-          [_vm._v("Private")]
+          [_vm._v("PRIVATE")]
         )
       ],
       1
@@ -15470,7 +15089,7 @@ var render = function() {
         _c(
           "router-link",
           { attrs: { to: "/contact", "exact-active-class": "active" } },
-          [_vm._v("Contact")]
+          [_vm._v("CONTACT")]
         )
       ],
       1
@@ -15488,25 +15107,21 @@ if (false) {
 }
 
 /***/ }),
-/* 26 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(27)
-}
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(29)
+var __vue_script__ = __webpack_require__(21)
 /* template */
-var __vue_template__ = __webpack_require__(31)
+var __vue_template__ = __webpack_require__(23)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
-var __vue_scopeId__ = "data-v-bcff6f92"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -15539,51 +15154,42 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(28);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("7add1987", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-bcff6f92\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Index.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-bcff6f92\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Index.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 29 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -15657,19 +15263,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     name: "Index",
     data: function data() {
         return {
-            profile_image: __webpack_require__(30)
+            profile_image: __webpack_require__(22)
         };
     }
 });
 
 /***/ }),
-/* 30 */
+/* 22 */
 /***/ (function(module, exports) {
 
-module.exports = "/images/profile.jpg?c984b6b9aa357198cf8f241b1fb76138";
+module.exports = "/images/profile_image.jpg?c984b6b9aa357198cf8f241b1fb76138";
 
 /***/ }),
-/* 31 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -15677,25 +15283,18 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "main" } }, [
-    _c("article", [
-      _c("h2", [_vm._v("PROFILE")]),
-      _vm._v(" "),
-      _c("h3", [_vm._v("市川 健太 (イチカワ ケンタ)")]),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "a",
-        { staticClass: "image main", attrs: { href: "javascript:void(0)" } },
-        [_c("img", { attrs: { src: _vm.profile_image, alt: "profile" } })]
-      )
+    _c("div", { staticClass: "contentBox" }, [
+      _c("div", { staticClass: "content" }, [
+        _c("img", {
+          staticClass: "profileImage",
+          attrs: { src: _vm.profile_image, alt: "" }
+        })
+      ])
     ]),
     _vm._v(" "),
-    _vm._m(1),
+    _vm._m(0),
     _vm._v(" "),
-    _vm._m(2),
-    _vm._v(" "),
-    _vm._m(3)
+    _vm._m(1)
   ])
 }
 var staticRenderFns = [
@@ -15703,124 +15302,185 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", [
-      _vm._v("93年2月生まれ、B型、千葉県出身、神奈川県在住。"),
-      _c("br"),
-      _vm._v('"イッチー", "ケンシロー"などと呼ばれている。webエンジニア。')
+    return _c("div", { staticClass: "overviewBox" }, [
+      _c("div", { staticClass: "overview1" }, [
+        _c("div", { staticClass: "overviewContent" }, [
+          _c("a", { attrs: { href: "/about" } }, [
+            _c("i", { staticClass: "fas fa-user-alt" }),
+            _vm._v(" "),
+            _c("h1", [_vm._v("ABOUT")]),
+            _vm._v(" "),
+            _c("p", [_vm._v("私についての概要")])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "overview2" }, [
+        _c("div", { staticClass: "overviewContent" }, [
+          _c("a", { attrs: { href: "/history" } }, [
+            _c("i", { staticClass: "fas fa-laptop" }),
+            _vm._v(" "),
+            _c("h1", [_vm._v("HISTORY")]),
+            _vm._v(" "),
+            _c("p", [_vm._v("学歴・職歴")])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "overview3" }, [
+        _c("div", { staticClass: "overviewContent" }, [
+          _c("a", { attrs: { href: "/private" } }, [
+            _c("i", { staticClass: "fas fa-gamepad" }),
+            _vm._v(" "),
+            _c("h1", [_vm._v("PRIVATE")]),
+            _vm._v(" "),
+            _c("p", [_vm._v("プライベートの略歴")])
+          ])
+        ])
+      ])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("article", [
-      _c("h2", [_vm._v("BIOGRAPHY")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "table-wrapper" }, [
-        _c("table", [
-          _c("thead", [
-            _c("tr", [_c("th"), _vm._v(" "), _c("th"), _vm._v(" "), _c("th")])
-          ]),
-          _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c("td", [
-                _vm._v("専修大学"),
-                _c("br"),
-                _vm._v("経営学部 経営学科")
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  "マーケティング × ITを研究するゼミに所属。趣味でサークルの立ち上げ等。"
-                ),
-                _c("br"),
-                _vm._v("友人に教えてもらいながら独学でプログラミングを学ぶ。")
+    return _c("div", { staticClass: "newsListBox" }, [
+      _c("div", { staticClass: "overNews" }, [
+        _c("div", { staticClass: "news" }, [
+          _c("ul", [
+            _c("h1", [_vm._v("NEWS")]),
+            _vm._v(" "),
+            _c("li", [
+              _c("a", { attrs: { href: "/", target: "_blank" } }, [
+                _c("time", { attrs: { datetime: "2018-10-17" } }, [
+                  _vm._v("10/17")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "newsTitle" }, [
+                  _vm._v("当サイトのUIをリニューアルしました。")
+                ])
               ])
             ]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [
-                _vm._v("株式会社ココラブル"),
-                _c("br"),
-                _vm._v("インターンシップ")
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  "データ分析・企画職として入社。分析効率化のためプログラミングを勉強し実践。"
-                )
-              ])
+            _c("li", [
+              _c(
+                "a",
+                {
+                  attrs: {
+                    href:
+                      "https://icchy.hatenadiary.jp/entry/2018/10/14/220740",
+                    target: "_blank"
+                  }
+                },
+                [
+                  _c("time", { attrs: { datetime: "2018-10-14" } }, [
+                    _vm._v("10/14")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "newsTitle" }, [
+                    _vm._v("ブログで近況を更新しました。")
+                  ])
+                ]
+              )
             ]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [
-                _vm._v("アライドアーキテクツ株式会社"),
-                _c("br"),
-                _vm._v("エンジニア職")
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  "ユーザーグロース、システム運用、新規サービス開発に従事。"
-                )
+            _c("li", [
+              _c("a", { attrs: { href: "/", target: "_blank" } }, [
+                _c("time", { attrs: { datetime: "2018-10-01" } }, [
+                  _vm._v("10/01")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "newsTitle" }, [
+                  _vm._v("サイトを公開しました。")
+                ])
               ])
             ])
           ])
         ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("article", [
-      _c("h2", [_vm._v("SKILL")]),
+      ]),
       _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-6 col-12-small" }, [
-          _c("h3", [_vm._v("work")]),
+      _c("div", { staticClass: "snsList" }, [
+        _c("div", { staticClass: "snsInfo" }, [
+          _vm._v("こちらでも更新しています。\n                "),
+          _c("div", { staticClass: "triangle" })
+        ]),
+        _vm._v(" "),
+        _c("ul", [
+          _c("li", { staticClass: "facebookBtn" }, [
+            _c(
+              "a",
+              {
+                staticClass: "facebook",
+                attrs: {
+                  href: "https://www.facebook.com/icchy.kenshiro",
+                  target: "_blank"
+                }
+              },
+              [
+                _c("i", { staticClass: "fab fa-facebook-square" }),
+                _vm._v(
+                  "\n                        Facebook\n                    "
+                )
+              ]
+            )
+          ]),
           _vm._v(" "),
-          _c("ul", [
-            _c("li", [_vm._v("PHP（Laravel）")]),
-            _vm._v(" "),
-            _c("li", [_vm._v("Vue.js")]),
-            _vm._v(" "),
-            _c("li", [_vm._v("jQuery")])
+          _c("li", { staticClass: "instagramBtn" }, [
+            _c(
+              "a",
+              {
+                staticClass: "instagram",
+                attrs: {
+                  href: "https://www.instagram.com/icchy1902/",
+                  target: "_blank"
+                }
+              },
+              [
+                _c("i", { staticClass: "fab fa-instagram" }),
+                _vm._v(
+                  "\n                        Instagram\n                    "
+                )
+              ]
+            )
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-6 col-12-small" }, [
-          _c("h3", [_vm._v("hobby")]),
+        _c("ul", [
+          _c("li", { staticClass: "gitHubBtn" }, [
+            _c(
+              "a",
+              {
+                staticClass: "github",
+                attrs: {
+                  href: "https://github.com/k-ichikawa",
+                  target: "_blank"
+                }
+              },
+              [
+                _c("i", { staticClass: "fab fa-github" }),
+                _vm._v("\n                        gitHub\n                    ")
+              ]
+            )
+          ]),
           _vm._v(" "),
-          _c("ul", [
-            _c("li", [_vm._v("Ruby（Rails）")]),
-            _vm._v(" "),
-            _c("li", [_vm._v("Google Apps Script")])
+          _c("li", { staticClass: "blogBtn" }, [
+            _c(
+              "a",
+              {
+                staticClass: "blog",
+                attrs: {
+                  href: "https://icchy.hatenadiary.jp/",
+                  target: "_blank"
+                }
+              },
+              [
+                _c("i", { staticClass: "fas fa-pen-square" }),
+                _vm._v("\n                        blog\n                    ")
+              ]
+            )
           ])
         ])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("article", [
-      _c("h2", [_vm._v("BLOG")]),
-      _vm._v(" "),
-      _c("p", [
-        _c(
-          "a",
-          {
-            attrs: { href: "https://icchy.hatenadiary.jp/", target: "_blank" }
-          },
-          [_vm._v("kenta's diary")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("p", [_vm._v("テックな事、日常の事を記事にしています。")])
     ])
   }
 ]
@@ -15834,25 +15494,21 @@ if (false) {
 }
 
 /***/ }),
-/* 32 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(33)
-}
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(35)
+var __vue_script__ = __webpack_require__(25)
 /* template */
-var __vue_template__ = __webpack_require__(38)
+var __vue_template__ = __webpack_require__(27)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
-var __vue_scopeId__ = "data-v-13ad62e7"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -15863,7 +15519,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/articles/Works.vue"
+Component.options.__file = "resources/assets/js/components/articles/About.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -15872,9 +15528,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-13ad62e7", Component.options)
+    hotAPI.createRecord("data-v-fc6f251c", Component.options)
   } else {
-    hotAPI.reload("data-v-13ad62e7", Component.options)
+    hotAPI.reload("data-v-fc6f251c", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -15885,47 +15541,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(34);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("22475c1e", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-13ad62e7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Works.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-13ad62e7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Works.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 35 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15950,73 +15566,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: "Works",
+    name: "Index",
     data: function data() {
         return {
-            work_image_01: __webpack_require__(36),
-            work_image_02: __webpack_require__(8),
-            work_image_03: __webpack_require__(8),
-            work_image_04: __webpack_require__(37)
+            about_image: __webpack_require__(26)
         };
     }
 });
 
 /***/ }),
-/* 36 */
+/* 26 */
 /***/ (function(module, exports) {
 
-module.exports = "/images/monipla.jpg?7b2bf98e574ae01950a1b8a80ea441e4";
+module.exports = "/images/about_image.jpg?ec247fc4b7787baddbe0520653efff73";
 
 /***/ }),
-/* 37 */
-/***/ (function(module, exports) {
-
-module.exports = "/images/brand_touch.jpg?7199ead549b1b3fe7411ea5f65c9e296";
-
-/***/ }),
-/* 38 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -16024,73 +15591,13 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "main" } }, [
-    _c("section", { staticClass: "posts" }, [
+    _c("div", { staticClass: "articleBox" }, [
       _c("article", [
-        _vm._m(0),
+        _c("img", { attrs: { src: _vm.about_image, alt: "" } }),
         _vm._v(" "),
-        _c("h3", [_vm._v("ユーザーグロース")]),
+        _c("h1", [_vm._v("ABOUT")]),
         _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "image fit",
-            attrs: { href: "https://cp.monipla.com/" }
-          },
-          [
-            _c("img", {
-              attrs: { src: _vm.work_image_01, alt: "work_image_01" }
-            })
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("article", [
-        _vm._m(2),
-        _vm._v(" "),
-        _c("h3", [_vm._v("新規機能開発")]),
-        _vm._v(" "),
-        _vm._m(3),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "image fit",
-            attrs: { href: "https://cp.monipla.com/" }
-          },
-          [
-            _c("img", {
-              attrs: { src: _vm.work_image_03, alt: "work_image_03" }
-            })
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(4),
-      _vm._v(" "),
-      _c("article", [
-        _vm._m(5),
-        _vm._v(" "),
-        _c("h3", [_vm._v("新規サービス開発")]),
-        _vm._v(" "),
-        _vm._m(6),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "image fit",
-            attrs: {
-              href: "https://www.aainc.co.jp/service/brandtouch/",
-              target: "_blank"
-            }
-          },
-          [
-            _c("img", {
-              attrs: { src: _vm.work_image_04, alt: "work_image_02" }
-            })
-          ]
-        )
+        _vm._m(0)
       ])
     ])
   ])
@@ -16100,117 +15607,26 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("header", [
-      _c("span", { staticClass: "date" }, [_vm._v("2016/04 ~ 2016/12")]),
+    return _c("div", { staticClass: "explain" }, [
+      _c("h2", [_vm._v("市川 健太（イチカワ ケンタ）")]),
       _vm._v(" "),
-      _c("h2", [
-        _c("a", { attrs: { href: "https://cp.monipla.com/" } }, [
-          _vm._v("monipla")
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _vm._v("キャンペーン参加者数を改善開発により150,000/月↑"),
-      _c("br"),
-      _vm._v("（通常参加数 1,500,000/月）"),
-      _c("br"),
-      _c("br")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", [
-      _c("span", { staticClass: "date" }, [_vm._v("2017/01 ~ 2017/07")]),
-      _vm._v(" "),
-      _c("h2", [
-        _c("a", { attrs: { href: "https://cp.monipla.com/" } }, [
-          _vm._v("monipla")
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _vm._v(
-        "iframeタグを企業のオウンドサイトへ埋め込む事で\n                "
-      ),
-      _c("br"),
-      _vm._v(
-        "ユーザーがコメントを投稿できるプラグインを開発。\n                "
-      ),
-      _c("br"),
-      _vm._v("10~20社の導入実績あり。\n            ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("article", [
-      _c("header", [
-        _c("span", { staticClass: "date" }, [_vm._v("2017/08 ~ 2018/03")]),
-        _vm._v(" "),
-        _c("h2", [
-          _c("a", { attrs: { href: "https://cp.monipla.com/" } }, [
-            _vm._v("monipla")
-          ])
-        ])
+      _c("p", { staticClass: "sentence" }, [
+        _vm._v("93年2月生, B型, 千葉県出身, 神奈川県在住")
       ]),
       _vm._v(" "),
-      _c("h3", [_vm._v("システム運用・保守")]),
+      _c("p", { staticClass: "sentence" }, [
+        _vm._v('"イッチー", "ケンシロー"などと呼ばれている。webエンジニア')
+      ]),
       _vm._v(" "),
-      _c("p", [
-        _vm._v(
-          "モニプラにおける社内外からの問い合わせに対応。\n                "
-        ),
-        _c("br"),
-        _vm._v("およびバグ・障害対応。\n                "),
-        _c("br"),
-        _vm._v(
-          "100件/月 の問い合わせを改善開発により 70件/月 まで削減\n            "
-        )
+      _c("h2", [_vm._v("Skill")]),
+      _vm._v(" "),
+      _c("p", { staticClass: "sentence" }, [
+        _vm._v("Work：PHP（Laravel）, javascript（Vue, jQuery）")
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "sentence" }, [
+        _vm._v("Hobby：Ruby（Rails）, Google Apps Script")
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", [
-      _c("span", { staticClass: "date" }, [_vm._v("2018/04 ~ ")]),
-      _vm._v(" "),
-      _c("h2", [
-        _c(
-          "a",
-          { attrs: { href: "https://www.aainc.co.jp/service/brandtouch/" } },
-          [_vm._v("brand touch")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _vm._v(
-        "新規サービス立ち上げ、管理画面開発をメインで担当。\n                "
-      ),
-      _c("br"),
-      _vm._v("Vue.jsを初めて導入し、短納期で開発\n                "),
-      _c("br"),
-      _vm._v(" "),
-      _c("br")
     ])
   }
 ]
@@ -16219,30 +15635,259 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-13ad62e7", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-fc6f251c", module.exports)
   }
 }
 
 /***/ }),
-/* 39 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(40)
-}
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(42)
+var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(61)
+var __vue_template__ = __webpack_require__(29)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
-var __vue_scopeId__ = "data-v-b21775b0"
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/articles/History.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-466b13b9", Component.options)
+  } else {
+    hotAPI.reload("data-v-466b13b9", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "articleBox" }, [
+      _c("article", [
+        _c("h1", [_vm._v("HISTORY")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "explain" }, [
+          _c("h2", [_vm._v("学歴・職歴")]),
+          _vm._v(" "),
+          _c("ul", { staticClass: "timeline" }, [
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2011年3月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("千葉県立津田沼高等学校 卒業")]),
+                _vm._v(" "),
+                _c("p", [_vm._v("体育と日本史が好きだった")])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2011年4月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("専修大学 経営学部 入学")]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v("会計の勉強が好きで、簿記の資格を取るなどしていた")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2012年11月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("マーケティング × ITのゼミに所属")]),
+                _vm._v(" "),
+                _c("p", [
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href:
+                          "http://www.kanagawa-doyukai.or.jp/activity/program.html",
+                        target: "_blank"
+                      }
+                    },
+                    [_vm._v("神奈川産学チャレンジプログラム")]
+                  ),
+                  _vm._v(
+                    "でITを活用した売上増加・マーケ施策を提案し、最優秀賞獲得\n                        "
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2015年3月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("4年次を休学")]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v("就職活動よりもプログラミングの勉強がしたくなり、休学")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2015年8月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("株式会社ココラブル インターン")]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "企業でプログラミングの経験をさせてもらうため、1年間勤務。"
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "データ分析・企画、分析の効率化のためにプログラミング、Eコマースの広告出向等を経験"
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2016年4月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("アライドアーキテクツ株式会社 入社")]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v("新卒エンジニアとして入社。"),
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href: "https://cp.monipla.com/",
+                        target: "_blank"
+                      }
+                    },
+                    [_vm._v("モニプラ")]
+                  ),
+                  _vm._v("の開発を2年間担当。"),
+                  _c("br"),
+                  _vm._v(
+                    "\n                            部署はユーザーグロース、新規機能開発、システム運用をそれぞれ半年〜1年ずつ経験"
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "開発工程としては、全て要件定義・設計・開発・テスト・リリース・運用まで経験"
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2018年4月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [
+                  _vm._v("アライドアーキテクツ株式会社 新規サービス開発")
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v("新規サービス、"),
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href: "https://www.aainc.co.jp/service/brandtouch/",
+                        target: "_blank"
+                      }
+                    },
+                    [_vm._v("brand touch")]
+                  ),
+                  _vm._v("の開発チームに配属"),
+                  _c("br"),
+                  _vm._v("管理画面全般をほぼ1人で、設計〜リリースまで担当")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2018年10月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("アライドアーキテクツ株式会社 退職")]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "開発スキルが付いたので、自分が好きなサービスに関われる仕事を探し中"
+                  )
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-466b13b9", module.exports)
+  }
+}
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(31)
+/* template */
+var __vue_template__ = __webpack_require__(50)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -16275,65 +15920,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(41);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("18f800de", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-b21775b0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Private.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-b21775b0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Private.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 42 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_axios__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_axios__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_axios__);
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -16436,16 +16033,16 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
 });
 
 /***/ }),
-/* 43 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(10);
-var Axios = __webpack_require__(45);
-var defaults = __webpack_require__(6);
+var bind = __webpack_require__(7);
+var Axios = __webpack_require__(34);
+var defaults = __webpack_require__(4);
 
 /**
  * Create an instance of Axios
@@ -16478,15 +16075,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(14);
-axios.CancelToken = __webpack_require__(59);
-axios.isCancel = __webpack_require__(13);
+axios.Cancel = __webpack_require__(11);
+axios.CancelToken = __webpack_require__(48);
+axios.isCancel = __webpack_require__(10);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(60);
+axios.spread = __webpack_require__(49);
 
 module.exports = axios;
 
@@ -16495,7 +16092,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 44 */
+/* 33 */
 /***/ (function(module, exports) {
 
 /*!
@@ -16522,16 +16119,16 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 45 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(6);
+var defaults = __webpack_require__(4);
 var utils = __webpack_require__(0);
-var InterceptorManager = __webpack_require__(54);
-var dispatchRequest = __webpack_require__(55);
+var InterceptorManager = __webpack_require__(43);
+var dispatchRequest = __webpack_require__(44);
 
 /**
  * Create a new instance of Axios
@@ -16608,7 +16205,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 46 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16627,13 +16224,13 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 47 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(12);
+var createError = __webpack_require__(9);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -16660,7 +16257,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 48 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16688,7 +16285,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 49 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16761,7 +16358,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 50 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16821,7 +16418,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 51 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16896,7 +16493,7 @@ module.exports = (
 
 
 /***/ }),
-/* 52 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16939,7 +16536,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 53 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16999,7 +16596,7 @@ module.exports = (
 
 
 /***/ }),
-/* 54 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17058,18 +16655,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 55 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var transformData = __webpack_require__(56);
-var isCancel = __webpack_require__(13);
-var defaults = __webpack_require__(6);
-var isAbsoluteURL = __webpack_require__(57);
-var combineURLs = __webpack_require__(58);
+var transformData = __webpack_require__(45);
+var isCancel = __webpack_require__(10);
+var defaults = __webpack_require__(4);
+var isAbsoluteURL = __webpack_require__(46);
+var combineURLs = __webpack_require__(47);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -17151,7 +16748,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 56 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17178,7 +16775,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 57 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17199,7 +16796,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 58 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17220,13 +16817,13 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 59 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(14);
+var Cancel = __webpack_require__(11);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -17284,7 +16881,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 60 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17318,7 +16915,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 61 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -17326,31 +16923,44 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("article", [
-      _c("h2", [_vm._v("Recently Instagram Photos")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "box alt" }, [
-        _c(
-          "div",
-          { staticClass: "row gtr-50 gtr-uniform" },
-          _vm._l(_vm.images, function(image) {
-            return _c("div", { staticClass: "col-4" }, [
-              _c("span", { staticClass: "image fit" }, [
-                _c("a", { attrs: { target: "_blank", href: image.post_url } }, [
-                  _c("img", { attrs: { src: image.post_image_url, alt: "" } }),
-                  _vm._v(" "),
-                  _c("blockquote", { staticClass: "with-photo" }, [
-                    _vm._v(_vm._s(image.text)),
-                    _c("br"),
-                    _vm._v(_vm._s(image.posted_at))
-                  ])
-                ])
+    _c("div", { staticClass: "articleBox" }, [
+      _c("article", [
+        _c("h1", [_vm._v("PRIVATE")]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "explain" }, [
+          _c("h2", [_vm._v("Recently Instagram Photos")]),
+          _vm._v(" "),
+          _c(
+            "ul",
+            { staticClass: "photoList" },
+            _vm._l(_vm.images, function(image) {
+              return _c("li", [
+                _c(
+                  "a",
+                  {
+                    staticClass: "imageLink",
+                    attrs: { href: image.post_url, target: "_blank" }
+                  },
+                  [
+                    _c("img", {
+                      attrs: { src: image.post_image_url, alt: "" }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text" }, [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(image.text) +
+                          "\n                            "
+                      )
+                    ])
+                  ]
+                )
               ])
-            ])
-          })
-        )
+            })
+          )
+        ])
       ])
     ])
   ])
@@ -17360,114 +16970,118 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("article", [
-      _c("h2", [_vm._v("PRIVATE BIOGRAPHY")]),
+    return _c("div", { staticClass: "explain" }, [
+      _c("h2", [_vm._v("プライベートの略歴")]),
       _vm._v(" "),
-      _c("div", { staticClass: "table-wrapper" }, [
-        _c("table", [
-          _c("thead", [_c("tr", [_c("th"), _vm._v(" "), _c("th")])]),
+      _c("ul", { staticClass: "timeline" }, [
+        _c("li", [
+          _c("p", { staticClass: "timeline-date" }, [_vm._v("1999年4月")]),
           _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c("td", [_vm._v("小学生時代")]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  "家でポケモンをやるか、外で野球をするだけの毎日。人見知り。"
-                )
-              ])
-            ]),
+          _c("div", { staticClass: "timeline-content" }, [
+            _c("h3", [_vm._v("小学生時代")]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("中学生時代")]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  "卓球部に入りレギュラーを勝ち取るも、緊張体質のため大会で結果を残せず。\n                        "
-                ),
-                _c("br"),
-                _vm._v(
-                  "戦国BASARAやドラクエにハマり徹ゲーを覚えてしまう。\n                        "
-                ),
-                _c("br"),
-                _vm._v(
-                  "デュエルマスターズにもハマり、カードゲームの楽しさを知る。\n                        "
-                ),
-                _c("br"),
-                _vm._v(
-                  "家にPCが導入され没頭。ブログや掲示板等、世の中に発信することを覚える。\n                        "
-                ),
-                _c("br"),
-                _vm._v("Perfumeにハマる。\n                    ")
-              ])
-            ]),
+            _c("p", [
+              _vm._v("ポケモンを通じて初めて友達が出来る。"),
+              _c("br"),
+              _vm._v("野球をするのが好きだった。")
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("p", { staticClass: "timeline-date" }, [_vm._v("2005年4月")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "timeline-content" }, [
+            _c("h3", [_vm._v("中学生時代")]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("高校生時代")]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  "アルバイトが出来るようになり、アニメ・ゲームへの没頭が加速。\n                        "
-                ),
-                _c("br"),
-                _vm._v(
-                  "アニメのキャラクターがカードゲームになっているヴァイスシュヴァルツにドハマり。\n                        "
-                ),
-                _c("br"),
-                _vm._v(
-                  "遊ぶために指定校推薦を取り、オタクのまま大学デビューをしてしまう。\n                    "
-                )
-              ])
-            ]),
+            _c("p", [
+              _vm._v(
+                "そこそこセンスがあったため、卓球部に入る。レギュラーなのに緊張体質で試合で勝てず。"
+              ),
+              _c("br"),
+              _vm._v(
+                "家にPCが導入され、ブログや掲示板等、世の中に発信することを覚える。"
+              ),
+              _c("br"),
+              _vm._v("カードゲームやテレビゲームにドハマり"),
+              _c("br"),
+              _vm._v("奇跡的に彼女が出来る。")
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("p", { staticClass: "timeline-date" }, [_vm._v("2008年4月")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "timeline-content" }, [
+            _c("h3", [_vm._v("高校生時代")]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("大学生時代（前）")]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  "私立文系大学の単位の取りやすさを知ってしまい、アルバイトとカードゲームとアニメを繰り返す毎日。\n                        "
-                ),
-                _c("br"),
-                _vm._v(
-                  "大学までが遠いため、大学内でカードゲームをしたくなりサークルを立ち上げる。\n                    "
-                )
-              ])
-            ]),
+            _c("p", [
+              _c(
+                "a",
+                { attrs: { href: "https://ws-tcg.com/", target: "_blank" } },
+                [_vm._v("ヴァイスシュヴァルツ")]
+              ),
+              _vm._v("、"),
+              _c(
+                "a",
+                {
+                  attrs: {
+                    href: "http://www.capcom.co.jp/monsterhunter/P2ndG/",
+                    target: "_blank"
+                  }
+                },
+                [_vm._v("モンスターハンター2ndG")]
+              ),
+              _vm._v("に明け暮れる。"),
+              _c("br"),
+              _vm._v("Perfumeにハマり、ライブに行くようになる。")
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("p", { staticClass: "timeline-date" }, [_vm._v("2011年4月")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "timeline-content" }, [
+            _c("h3", [_vm._v("大学生時代（前）")]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("大学生時代（後）")]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  "\n                        アルバイト先に同年代の異性が多かったこともあり、やっとこさ色気付いて、人並みのファッションや髪型に興味を持つ。\n                        "
-                ),
-                _c("br"),
-                _vm._v(
-                  "FacebookやInstagramで友達を増やしまくり人並みのアピールをし始める。\n                    "
-                )
-              ])
-            ]),
+            _c("p", [
+              _vm._v(
+                "大学までが遠いため、学内でカードゲームをしたくなりサークルを立ち上げる。"
+              ),
+              _c("br"),
+              _vm._v("カードゲーム、アルバイト、アニメを繰り返す毎日")
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("p", { staticClass: "timeline-date" }, [_vm._v("2013年4月")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "timeline-content" }, [
+            _c("h3", [_vm._v("大学生時代（後）")]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("社会人")]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  "\n                        仕事に忙殺されながらもヴァイスシュヴァルツだけは続けている。\n                        "
-                ),
-                _c("br"),
-                _vm._v(
-                  "弟の影響でyoutubeを暇さえあればあさる。ブライアン、へきトラハウス、ポッキーが好き。\n                        "
-                ),
-                _c("br"),
-                _vm._v(
-                  "最近はフリースタイルダンジョン等の日本語ラップにハマっている。\n                        "
-                ),
-                _c("br"),
-                _vm._v(
-                  "スプラトゥーンを勧められてしまったので、休みの日は徹ゲーしている。\n                    "
-                )
-              ])
+            _c("p", [
+              _vm._v(
+                "アルバイトやインターン、ゼミなどで異性との交流が増え、髪型や服装を気にし始める。"
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("p", { staticClass: "timeline-date" }, [_vm._v("2016年4月")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "timeline-content" }, [
+            _c("h3", [_vm._v("社会人〜現在")]),
+            _vm._v(" "),
+            _c("p", [
+              _vm._v(
+                "暇があるとカードゲームとyoutube視聴とスプラトゥーンのどれかをしている。"
+              ),
+              _c("br"),
+              _vm._v("日本語ラップにハマっている。")
             ])
           ])
         ])
@@ -17485,25 +17099,21 @@ if (false) {
 }
 
 /***/ }),
-/* 62 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(63)
-}
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(65)
+var __vue_script__ = __webpack_require__(52)
 /* template */
-var __vue_template__ = __webpack_require__(66)
+var __vue_template__ = __webpack_require__(53)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
-var __vue_scopeId__ = "data-v-33dfad45"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -17536,57 +17146,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(64);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("302073e7", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-33dfad45\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Contact.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-33dfad45\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Contact.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 65 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_axios__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_axios__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_axios__);
+//
 //
 //
 //
@@ -17675,126 +17246,131 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
 });
 
 /***/ }),
-/* 66 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", [
-    _c("div", [
-      _c("div", { staticClass: "fields" }, [
+  return _c("div", { staticClass: "articleBox" }, [
+    _c("article", [
+      _c("h1", [_vm._v("CONTACT")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "explain" }, [
         _vm.is_error
           ? _c("span", { staticStyle: { color: "#DC143C" } }, [
               _vm._v("※正しく入力をお願いいたします。")
             ])
           : _vm._e(),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "field", staticStyle: { "margin-bottom": "10px" } },
-          [
-            _c("label", { attrs: { for: "name" } }, [_vm._v("Name")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.name,
-                  expression: "name"
-                }
-              ],
-              attrs: { type: "text", id: "name" },
-              domProps: { value: _vm.name },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.name = $event.target.value
-                }
+        _c("div", { staticClass: "name" }, [
+          _c("h3", [_vm._v("お名前")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.name,
+                expression: "name"
               }
-            }),
-            _vm._v(" "),
-            _vm.hasError("name")
-              ? _c("span", { staticStyle: { color: "#DC143C" } }, [
-                  _vm._v(_vm._s(_vm.getError("name")))
-                ])
-              : _vm._e()
-          ]
-        ),
+            ],
+            staticClass: "inputText",
+            attrs: { type: "text" },
+            domProps: { value: _vm.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.name = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.hasError("name")
+            ? _c("span", { staticStyle: { color: "#DC143C" } }, [
+                _vm._v(_vm._s(_vm.getError("name")))
+              ])
+            : _vm._e()
+        ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "field", staticStyle: { "margin-bottom": "10px" } },
-          [
-            _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.mail_address,
-                  expression: "mail_address"
-                }
-              ],
-              attrs: { type: "email", id: "email" },
-              domProps: { value: _vm.mail_address },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.mail_address = $event.target.value
-                }
+        _c("div", { staticClass: "mailAddress" }, [
+          _c("h3", [_vm._v("メールアドレス")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.mail_address,
+                expression: "mail_address"
               }
-            }),
-            _vm._v(" "),
-            _vm.hasError("mail_address")
-              ? _c("span", { staticStyle: { color: "#DC143C" } }, [
-                  _vm._v(_vm._s(_vm.getError("mail_address")))
-                ])
-              : _vm._e()
-          ]
-        ),
+            ],
+            staticClass: "inputText",
+            attrs: { type: "email" },
+            domProps: { value: _vm.mail_address },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.mail_address = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.hasError("mail_address")
+            ? _c("span", { staticStyle: { color: "#DC143C" } }, [
+                _vm._v(_vm._s(_vm.getError("mail_address")))
+              ])
+            : _vm._e()
+        ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "field", staticStyle: { "margin-bottom": "10px" } },
-          [
-            _c("label", { attrs: { for: "message" } }, [_vm._v("Message")]),
-            _vm._v(" "),
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.message,
-                  expression: "message"
-                }
-              ],
-              attrs: { id: "message", rows: "3" },
-              domProps: { value: _vm.message },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.message = $event.target.value
-                }
+        _c("div", { staticClass: "message" }, [
+          _c("h3", [_vm._v("メッセージ")]),
+          _vm._v(" "),
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.message,
+                expression: "message"
               }
-            }),
-            _vm._v(" "),
-            _vm.hasError("message")
-              ? _c("span", { staticStyle: { color: "#DC143C" } }, [
-                  _vm._v(_vm._s(_vm.getError("message")))
-                ])
-              : _vm._e()
-          ]
-        ),
+            ],
+            attrs: { rows: "3" },
+            domProps: { value: _vm.message },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.message = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.hasError("message")
+            ? _c("span", { staticStyle: { color: "#DC143C" } }, [
+                _vm._v(_vm._s(_vm.getError("message")))
+              ])
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "submitButton" }, [
+          _c("input", {
+            staticClass: "button",
+            attrs: { type: "submit", value: "送信" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.sendMessage($event)
+              }
+            }
+          })
+        ]),
         _vm._v(" "),
         _vm.is_success
           ? _c("p", { staticStyle: { color: "#008000" } }, [
@@ -17803,20 +17379,6 @@ var render = function() {
               )
             ])
           : _vm._e()
-      ]),
-      _vm._v(" "),
-      _c("ul", { staticClass: "actions" }, [
-        _c("li", [
-          _c("input", {
-            attrs: { type: "submit", value: "Send Message" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.sendMessage($event)
-              }
-            }
-          })
-        ])
       ])
     ])
   ])

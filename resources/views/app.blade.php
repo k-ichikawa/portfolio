@@ -1,63 +1,54 @@
 <!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 <head>
-    <title>Icchy Profile</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <meta property="og:title" content="icchy profile" />
-    <meta property="og:type" content="website" />
-    <meta property="og:description" content="市川のプロフィールです。" />
-    <meta property="og:url" content="{{ route('app') }}" />
-    <meta property="og:site_name" content="icchy profile" />
-    <meta property="og:image" content="{{ asset('images/ogimage.jpg') }}" />
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
+    <title>icchy Profile</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta property="og:title" content="icchy profile">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="市川のプロフィールです。">
+    <meta property="og:url" content="{{ route('app') }}">
+    <meta property="og:site_name" content="icchy profile">
+    <meta property="og:image" content="{{ asset('images/ogimage.jpg') }}">
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|EB+Garamond" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <link rel="icon" href="{{ asset('images/favicon.ico') }}">
-    <noscript><link rel="stylesheet" href="{{ asset('css/noscript.css') }}" /></noscript>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body class="is-preload">
+    <div class="nav">
+        <div class="head">
+            <div class="headInner">
+                <div class="headerBox">
+                    <div class="siteName">
+                        <h1><a href="/">icchy Profile</a></h1>
+                    </div>
+                </div>
+                <div class="navBox">
+                    <a href="javascript:void(0)" type="button" id="menuBtn" onclick="$('.menu').slideToggle();">
+                        <i class="fas fa-bars"></i>
+                    </a>
 
-    <div id="wrapper" class="fade-in nav">
-
-        <div id="intro">
-            <h1>What is <br />Kenta Ichikawa ?</h1>
-            <p>web engineer</p>
+                    <nav id="nav" class="menu">
+                        <nav-component></nav-component>
+                    </nav>
+                </div>
+            </div>
         </div>
 
-        <!-- Nav -->
-        <nav id="nav">
-            <nav-component></nav-component>
-            <ul class="icons">
-                <li><a href="https://www.facebook.com/icchy.kenshiro" target="_blank" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-                <li><a href="https://www.instagram.com/icchy1902/" target="_blank" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-                <li><a href="https://github.com/k-ichikawa" target="_blank" class="icon fa-github"><span class="label">GitHub</span></a></li>
-            </ul>
-        </nav>
-
-        <!-- Main -->
         <div id="main">
             <router-view></router-view>
         </div>
-
-        <!-- Copyright -->
-        <div id="copyright">
-            <ul><li>&copy; Icchy Profile</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+    </div>
+    <div class="footerBox">
+        <div class="footerInner">
+            <div class="copyright">
+                <p>Copyright &copy icchy Profile
+            </div>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.scrollex.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.scrolly.min.js') }}"></script>
-    <script src="{{ asset('js/browser.min.js') }}"></script>
-    <script src="{{ asset('js/breakpoints.min.js') }}"></script>
-    <script src="{{ asset('js/util.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('assets/js/nav.js') }}"></script>
-
 </body>
 </html>

@@ -1,30 +1,31 @@
 <template>
-    <section>
-        <div>
-            <div class="fields">
+    <div class="articleBox">
+        <article>
+            <h1>CONTACT</h1>
+            <div class="explain">
                 <span v-if="is_error" style="color: #DC143C">※正しく入力をお願いいたします。</span>
-                <div class="field" style="margin-bottom: 10px">
-                    <label for="name">Name</label>
-                    <input type="text" v-model="name" id="name">
+                <div class="name">
+                    <h3>お名前</h3>
+                    <input type="text" v-model="name" class="inputText">
                     <span v-if="hasError('name')" style="color: #DC143C">{{ getError('name') }}</span>
                 </div>
-                <div class="field" style="margin-bottom: 10px">
-                    <label for="email">Email</label>
-                    <input type="email" v-model="mail_address" id="email">
+                <div class="mailAddress">
+                    <h3>メールアドレス</h3>
+                    <input type="email" v-model="mail_address" class="inputText">
                     <span v-if="hasError('mail_address')" style="color: #DC143C">{{ getError('mail_address') }}</span>
                 </div>
-                <div class="field" style="margin-bottom: 10px">
-                    <label for="message">Message</label>
-                    <textarea v-model="message" id="message" rows="3"></textarea>
+                <div class="message">
+                    <h3>メッセージ</h3>
+                    <textarea rows="3" v-model="message"></textarea>
                     <span v-if="hasError('message')" style="color: #DC143C">{{ getError('message') }}</span>
+                </div>
+                <div class="submitButton">
+                    <input type="submit" value="送信" class="button" v-on:click.prevent="sendMessage">
                 </div>
                 <p v-if="is_success" style="color: #008000;">お問い合わせありがとうございました。順次回答しますので、しばらくお待ち下さいませ。</p>
             </div>
-            <ul class="actions">
-                <li><input type="submit" value="Send Message" v-on:click.prevent="sendMessage"></li>
-            </ul>
-        </div>
-    </section>
+        </article>
+    </div>
 </template>
 
 <script>
@@ -82,7 +83,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>

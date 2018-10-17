@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>icchy Profile</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<meta property="og:title" content="icchy profile" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="市川のプロフィールです。" />
+    <meta property="og:url" content="" />
+    <meta property="og:site_name" content="icchy profile" />
+    <meta property="og:image" content="" />
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|EB+Garamond" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="icon" href="">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+	<div class="head">
+		<div class="headInner">
+			<div class="headerBox">
+				<div class="siteName">
+					<h1><a href="#">icchy Profile</a></h1>
+				</div>
+			</div>
+			<div class="navBox">
+				<a href="javascript:void(0)" type="button" id="menuBtn">
+					<i class="fas fa-bars"></i>
+				</a>
+				<nav class="menu">
+					<ul>
+						<li>
+							<a href="#">TOP</a>
+						</li>
+						<li>
+							<a href="#">ABOUT</a>
+						</li>
+						<li>
+							<a href="#">HISTORY</a>
+						</li>
+						<li>
+							<a href="#">PRIVATE</a>
+						</li>
+						<li>
+							<a href="#">CONTACT</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<div class="contentBox">
+		<div class="content">
+			<img class="profileImage" src="images/top_image.jpg" alt="">
+		</div>
+	</div>
+	<div class="overviewBox">
+		<div class="overview1">
+			<div class="overviewContent">
+				<a href="#">
+					<i class="fas fa-user-alt"></i>
+					<h1>ABOUT</h1>
+					<p>私についての概要</p>
+				</a>
+			</div>
+		</div>
+		<div class="overview2">
+			<div class="overviewContent">
+				<a href="#">
+					<i class="fas fa-laptop"></i>
+					<h1>HISTORY</h1>
+					<p>学歴・職歴</p>
+				</a>
+			</div>
+		</div>
+		<div class="overview3">
+			<div class="overviewContent">
+				<a href="#">
+					<i class="fas fa-gamepad"></i>
+					<h1>PRIVATE</h1>
+					<p>プライベートの略歴</p>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="newsListBox">
+		<div class="overNews">
+			<div class="news">
+				<ul>
+					<h1>NEWS</h1>
+					<li>
+						<a href="#" target="_blank">
+							<time datetime="2018-10-15">10/15</time>
+							<div class="newsTitle">「●●を使ってみた」ブログ更新しました。</div>	
+						</a>
+					</li>
+					<li>
+						<a href="#" target="_blank">
+							<time datetime="2018-10-15">10/15</time>
+							<div class="newsTitle">HPのUIをリニューアルしました。</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" target="_blank">
+							<time datetime="2018-10-15">10/15</time>
+							<div class="newsTitle">ブログの項目追加しました。</div>
+						</a>
+					</li>
+					<li>
+						<a href="#" target="_blank">
+							<time datetime="2018-10-15">10/15</time>
+							<div class="newsTitle">公開しました。</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="snsList">
+			<div class="snsInfo">こちらでも更新しています。
+				<div class="triangle"></div>
+			</div>
+			<ul>
+				<li class="facebookBtn">
+					<a href="#" class="facebook" target="_blank">
+						<i class="fab fa-facebook-square"></i>
+						Facebook
+					</a>
+				</li>
+				<li class="instagramBtn">
+					<a href="#" class="instagram" target="_blank">
+						<i class="fab fa-instagram"></i>
+						Instagram
+					</a>
+				</li>
+			</ul>
+			<ul>
+				<li class="gitHubBtn">
+					<a href="#" class="github" target="_blank">
+						<i class="fab fa-github"></i>
+						gitHub
+					</a>
+				</li>
+				<li class="blogBtn">
+					<a href="https://icchy.hatenadiary.jp/" class="blog" target="_blank">
+						<i class="fas fa-pen-square"></i>
+						blog
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="footerBox">
+		<div class="footerInner">
+			<div class="copyright">
+				<p>Copyright &copy icchy Profile
+			</div>
+		</div>
+	</div>
+	<script>
+    	$('#menuBtn').click( function() {
+    		$('.menu').slideToggle();
+    	});
+    </script>
+</body>
+</html>
