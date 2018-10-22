@@ -23,6 +23,7 @@
                     <input type="submit" value="送信" class="button" v-on:click.prevent="sendMessage">
                 </div>
                 <p v-if="is_success" style="color: #008000;">お問い合わせありがとうございました。順次回答しますので、しばらくお待ち下さいませ。</p>
+                <p v-else-if="is_system_error" style="color: #DC143C;">システムエラーが発生しました。<br>申し訳ございませんが、しばらくお待ちいただいた再度お試しいただくか、別の連絡手段をご利用くださいませ。</p>
             </div>
         </article>
     </div>
@@ -44,6 +45,7 @@
                 'message': '',
                 'is_success': false,
                 'is_error': false,
+                'is_system_error': false,
                 'error_messages': []
             }
         },
@@ -56,6 +58,7 @@
                 let apiName = '/send-message';
                 this.is_success = false;
                 this.is_error = false;
+                this.is_system_error = false;
                 this.error_messages = [];
 
                 axios.post(apiName, {
@@ -68,10 +71,15 @@
                         this.mail_address = '';
                         this.message = '';
                         this.is_success = true;
+                    } else if (res.data.result == false) {
+                        this.is_system_error = true;
                     }
                 }).catch(res => {
                     this.error_messages = res.response.data.errors;
                     this.is_error = true;
+                    if (res.data.result == false) {
+                        this.is_system_error = true;
+                    }
                 });
             },
             hasError(field) {

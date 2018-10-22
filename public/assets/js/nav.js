@@ -17187,6 +17187,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -17203,6 +17204,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
             'message': '',
             'is_success': false,
             'is_error': false,
+            'is_system_error': false,
             'error_messages': []
         };
     },
@@ -17218,6 +17220,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
             var apiName = '/send-message';
             this.is_success = false;
             this.is_error = false;
+            this.is_system_error = false;
             this.error_messages = [];
 
             __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post(apiName, {
@@ -17230,10 +17233,15 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
                     _this.mail_address = '';
                     _this.message = '';
                     _this.is_success = true;
+                } else if (res.data.result == false) {
+                    _this.is_system_error = true;
                 }
             }).catch(function (res) {
                 _this.error_messages = res.response.data.errors;
                 _this.is_error = true;
+                if (res.data.result == false) {
+                    _this.is_system_error = true;
+                }
             });
         },
         hasError: function hasError(field) {
@@ -17378,7 +17386,15 @@ var render = function() {
                 "お問い合わせありがとうございました。順次回答しますので、しばらくお待ち下さいませ。"
               )
             ])
-          : _vm._e()
+          : _vm.is_system_error
+            ? _c("p", { staticStyle: { color: "#DC143C" } }, [
+                _vm._v("システムエラーが発生しました。"),
+                _c("br"),
+                _vm._v(
+                  "申し訳ございませんが、しばらくお待ちいただいた再度お試しいただくか、別の連絡手段をご利用くださいませ。"
+                )
+              ])
+            : _vm._e()
       ])
     ])
   ])

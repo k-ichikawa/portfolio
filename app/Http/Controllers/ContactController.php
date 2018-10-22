@@ -6,6 +6,8 @@ use App\Http\Requests\SendMessageRequest;
 use App\Mail\ContactNotification;
 use App\Repositories\InquiryRepository;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class ContactController extends BaseController
@@ -26,11 +28,19 @@ class ContactController extends BaseController
             'message'       => $request->get('message')
         ];
 
-        $this->inquiryRepository->create($input);
+        DB::beginTransaction();
+        try {
+            $this->inquiryRepository->create($input);
+            DB::commit();
 
-        Mail::to('chottokeinkana@gmail.com')
-            ->send(new ContactNotification($input));
+            Mail::to(env('MAIL_TO_ADDRESS'))
+                ->send(new ContactNotification($input));
 
-        return json_encode(['result' => true]);
+            return json_encode(['result' => true]);
+        } catch (\PDOException $e) {
+            DB::rollBack();
+            Log::error($e . 'ContactController@sendMessage cannot send mail. Please check inquiries table');
+            return json_encode(['result' => false]);
+        }
     }
 }
