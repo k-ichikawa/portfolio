@@ -16,7 +16,7 @@ class SendMessageRequestTest extends TestCase
             'message'       => 'message'
         ];
 
-        $request = new SendMessageRequest();
+        $request = $this->getInstance();
         $rules   = $request->rules();
 
         $validator  = Validator::make($input, $rules);
@@ -24,15 +24,31 @@ class SendMessageRequestTest extends TestCase
         $this->assertTrue($validator->passes());
     }
 
-    public function testItCannotValidateByIncorrectData()
+    public function testItCannotValidateByIncorrectMailAddress()
     {
         $input = [
-            'name'          => 'name',
-            'mail_address'  => 'aaa',
+            'name'          => sprintf("%'255s", 0),
+            'mail_address'  => 'not_mail_address',
             'message'       => 'message'
         ];
 
-        $request = new SendMessageRequest();
+        $request = $this->getInstance();
+        $rules   = $request->rules();
+
+        $validator  = Validator::make($input, $rules);
+
+        $this->assertFalse($validator->passes());
+    }
+
+    public function testItCannotValidateByOver255Characters()
+    {
+        $input = [
+            'name'          => '',
+            'mail_address'  => 'not_mail_address',
+            'message'       => 'message'
+        ];
+
+        $request = $this->getInstance();
         $rules   = $request->rules();
 
         $validator  = Validator::make($input, $rules);
@@ -48,11 +64,19 @@ class SendMessageRequestTest extends TestCase
             'message'       => ''
         ];
 
-        $request = new SendMessageRequest();
+        $request = $this->getInstance();
         $rules   = $request->rules();
 
         $validator  = Validator::make($input, $rules);
 
         $this->assertFalse($validator->passes());
+    }
+
+    /**
+     * @return SendMessageRequest
+     */
+    private function getInstance()
+    {
+        return new SendMessageRequest();
     }
 }

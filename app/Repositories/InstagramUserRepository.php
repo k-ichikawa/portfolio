@@ -3,17 +3,17 @@ namespace App\Repositories;
 
 use Illuminate\Foundation\Application;
 
-class InstagramUserRepository
+class InstagramUserRepository extends BaseRepository
 {
-    protected $app;
-
     protected $model;
 
-    //TODO create base class
+    /**
+     * InstagramUserRepository constructor.
+     * @param Application $app
+     */
     public function __construct(Application $app)
     {
-        $this->app = $app;
-
+        parent::__construct($app);
         $this->makeModel();
     }
 
