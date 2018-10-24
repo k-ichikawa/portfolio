@@ -19,9 +19,6 @@
                     <textarea rows="3" v-model="message"></textarea>
                     <span v-if="hasError('message')" style="color: #DC143C">{{ getError('message') }}</span>
                 </div>
-                <!--<div class="submitButton">-->
-                    <!--<input type="submit" value="送信" class="button" v-on:click.prevent="sendMessage">-->
-                <!--</div>-->
                 <div class="submitButton">
                     <button v-if="is_loading" class="button isLoading">
                         <span>送信</span>
