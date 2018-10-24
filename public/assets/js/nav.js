@@ -17107,7 +17107,7 @@ var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(52)
 /* template */
-var __vue_template__ = __webpack_require__(53)
+var __vue_template__ = __webpack_require__(54)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -17188,6 +17188,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -17202,6 +17212,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
             'name': '',
             'mail_address': '',
             'message': '',
+            'loading_image': __webpack_require__(53),
+            'is_loading': false,
             'is_success': false,
             'is_error': false,
             'is_system_error': false,
@@ -17221,6 +17233,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
             this.is_success = false;
             this.is_error = false;
             this.is_system_error = false;
+            this.is_loading = true;
             this.error_messages = [];
 
             __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post(apiName, {
@@ -17228,6 +17241,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
                 mail_address: this.mail_address,
                 message: this.message
             }).then(function (res) {
+                _this.is_loading = false;
                 if (res.data.result == true) {
                     _this.name = '';
                     _this.mail_address = '';
@@ -17239,6 +17253,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
             }).catch(function (res) {
                 _this.error_messages = res.response.data.errors;
                 _this.is_error = true;
+                _this.is_loading = false;
                 if (res.data.result == false) {
                     _this.is_system_error = true;
                 }
@@ -17255,6 +17270,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
 
 /***/ }),
 /* 53 */
+/***/ (function(module, exports) {
+
+module.exports = "/images/loading.gif?9a9f447778173ed23f7a28713a1a76ab";
+
+/***/ }),
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -17368,16 +17389,28 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "submitButton" }, [
-          _c("input", {
-            staticClass: "button",
-            attrs: { type: "submit", value: "送信" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.sendMessage($event)
-              }
-            }
-          })
+          _vm.is_loading
+            ? _c("button", { staticClass: "button isLoading" }, [
+                _c("span", [_vm._v("送信")]),
+                _vm._v(" "),
+                _c("img", {
+                  staticClass: "loading",
+                  attrs: { src: _vm.loading_image }
+                })
+              ])
+            : _c(
+                "button",
+                {
+                  staticClass: "button",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.sendMessage($event)
+                    }
+                  }
+                },
+                [_c("span", [_vm._v("送信")])]
+              )
         ]),
         _vm._v(" "),
         _vm.is_success

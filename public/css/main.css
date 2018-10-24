@@ -150,12 +150,33 @@ article .explain .button {
 	outline: 0;
 }
 
+article .explain .isLoading {
+	opacity: 0.8;
+}
+
 article .explain .button:active {
 	box-shadow: none;
 }
 
 article .explain .submitButton {
 	margin-top: 15px;
+}
+
+article .explain .button {
+	position: relative;
+}
+
+article .explain .loading{
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: auto;
+	height: 80%;
+	opacity: 0.6;
+	background-color: #3d4852;
+	position: absolute;
 }
 
 .content {

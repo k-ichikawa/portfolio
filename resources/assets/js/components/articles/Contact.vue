@@ -19,9 +19,19 @@
                     <textarea rows="3" v-model="message"></textarea>
                     <span v-if="hasError('message')" style="color: #DC143C">{{ getError('message') }}</span>
                 </div>
+                <!--<div class="submitButton">-->
+                    <!--<input type="submit" value="送信" class="button" v-on:click.prevent="sendMessage">-->
+                <!--</div>-->
                 <div class="submitButton">
-                    <input type="submit" value="送信" class="button" v-on:click.prevent="sendMessage">
+                    <button v-if="is_loading" class="button isLoading">
+                        <span>送信</span>
+                        <img class="loading" :src="loading_image">
+                    </button>
+                    <button v-else class="button" v-on:click.prevent="sendMessage">
+                        <span>送信</span>
+                    </button>
                 </div>
+
                 <p v-if="is_success" style="color: #008000;">お問い合わせありがとうございました。順次回答しますので、しばらくお待ち下さいませ。</p>
                 <p v-else-if="is_system_error" style="color: #DC143C;">システムエラーが発生しました。<br>申し訳ございませんが、しばらくお待ちいただいた再度お試しいただくか、別の連絡手段をご利用くださいませ。</p>
             </div>
@@ -43,6 +53,8 @@
                 'name': '',
                 'mail_address': '',
                 'message': '',
+                'loading_image': require("../../../../images/loading.gif"),
+                'is_loading': false,
                 'is_success': false,
                 'is_error': false,
                 'is_system_error': false,
@@ -59,6 +71,7 @@
                 this.is_success = false;
                 this.is_error = false;
                 this.is_system_error = false;
+                this.is_loading = true;
                 this.error_messages = [];
 
                 axios.post(apiName, {
@@ -66,6 +79,7 @@
                     mail_address: this.mail_address,
                     message: this.message
                 }).then((res) => {
+                    this.is_loading = false;
                     if (res.data.result == true) {
                         this.name = '';
                         this.mail_address = '';
@@ -77,6 +91,7 @@
                 }).catch(res => {
                     this.error_messages = res.response.data.errors;
                     this.is_error = true;
+                    this.is_loading = false;
                     if (res.data.result == false) {
                         this.is_system_error = true;
                     }

@@ -10,7 +10,7 @@
     <meta property="og:url" content="" />
     <meta property="og:site_name" content="icchy profile" />
     <meta property="og:image" content="" />
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="../css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|EB+Garamond" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <link rel="icon" href="">
@@ -67,7 +67,14 @@
 					<textarea rows="3"></textarea>
 				</div>
 				<div class="submitButton">
-					<input type="submit" value="送信" class="button">
+					<button class="button isLoading">
+						<span>送信</span>
+						<img class="loading" src="../images/loading.gif">
+					</button>
+
+					<button class="button">
+						<span>送信</span>
+					</button>
 				</div>
 			</div>
 		</article>
