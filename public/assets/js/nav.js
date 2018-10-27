@@ -16011,9 +16011,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "Private",
-    is_system_error: false,
     data: function data() {
         return {
+            is_system_error: false,
             'images': []
         };
     },
@@ -16936,7 +16936,7 @@ var render = function() {
         _c("div", { staticClass: "explain" }, [
           _c("h2", [_vm._v("Recently Instagram Photos")]),
           _vm._v(" "),
-          !_vm.is_system_error
+          _vm.is_system_error
             ? _c("p", { staticStyle: { color: "#DC143C" } }, [
                 _vm._v("エラーが発生しました。しばらくお待ちください。")
               ])

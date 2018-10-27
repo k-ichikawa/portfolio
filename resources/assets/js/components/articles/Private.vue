@@ -52,7 +52,7 @@
                 </div>
                 <div class="explain">
                     <h2>Recently Instagram Photos</h2>
-                    <p v-if="!is_system_error" style="color: #DC143C">エラーが発生しました。しばらくお待ちください。</p>
+                    <p v-if="is_system_error" style="color: #DC143C">エラーが発生しました。しばらくお待ちください。</p>
                     <ul class="photoList">
                         <li v-for="image in images">
                             <a :href="image.post_url" class="imageLink" target="_blank">
@@ -78,9 +78,9 @@
 
     export default {
         name: "Private",
-        is_system_error: false,
         data() {
             return {
+                is_system_error: false,
                 'images': []
             }
         },
