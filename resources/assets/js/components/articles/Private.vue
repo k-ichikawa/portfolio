@@ -52,6 +52,7 @@
                 </div>
                 <div class="explain">
                     <h2>Recently Instagram Photos</h2>
+                    <p v-if="!is_system_error" style="color: #DC143C">エラーが発生しました。しばらくお待ちください。</p>
                     <ul class="photoList">
                         <li v-for="image in images">
                             <a :href="image.post_url" class="imageLink" target="_blank">
@@ -77,6 +78,7 @@
 
     export default {
         name: "Private",
+        is_system_error: false,
         data() {
             return {
                 'images': []
@@ -88,11 +90,11 @@
         methods: {
             fetchInstagramImages() {
                 let apiName = '/get-instagram-images';
-
+                this.is_system_error = false;
                 axios.get(apiName).then((res) => {
                     this.images = res.data;
                 }).catch(res => {
-
+                    this.is_system_error = true;
                 });
             },
         }
