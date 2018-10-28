@@ -64,14 +64,14 @@
         },
         methods: {
             sendMessage() {
-                let apiName = '/send-message';
+                let apiName = 'send-message';
                 this.is_success = false;
                 this.is_error = false;
                 this.is_system_error = false;
                 this.is_loading = true;
                 this.error_messages = [];
 
-                axios.post(apiName, {
+                axios.post('/' + apiName, {
                     name: this.name,
                     mail_address: this.mail_address,
                     message: this.message

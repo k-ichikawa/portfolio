@@ -15568,7 +15568,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: "Index",
+    name: "About",
     data: function data() {
         return {
             about_image: __webpack_require__(26)
@@ -16000,8 +16000,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -16025,9 +16023,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
         fetchInstagramImages: function fetchInstagramImages() {
             var _this = this;
 
-            var apiName = '/get-instagram-images';
+            var apiName = 'get-instagram-images';
             this.is_system_error = false;
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(apiName).then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('/' + apiName).then(function (res) {
                 _this.images = res.data;
             }).catch(function (res) {
                 _this.is_system_error = true;
@@ -16926,51 +16924,47 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "articleBox" }, [
-      _c("article", [
-        _c("h1", [_vm._v("PRIVATE")]),
+  return _c("div", { staticClass: "articleBox" }, [
+    _c("article", [
+      _c("h1", [_vm._v("PRIVATE")]),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "explain" }, [
+        _c("h2", [_vm._v("Recently Instagram Photos")]),
         _vm._v(" "),
-        _vm._m(0),
+        _vm.is_system_error
+          ? _c("p", { staticStyle: { color: "#DC143C" } }, [
+              _vm._v("エラーが発生しました。しばらくお待ちください。")
+            ])
+          : _vm._e(),
         _vm._v(" "),
-        _c("div", { staticClass: "explain" }, [
-          _c("h2", [_vm._v("Recently Instagram Photos")]),
-          _vm._v(" "),
-          _vm.is_system_error
-            ? _c("p", { staticStyle: { color: "#DC143C" } }, [
-                _vm._v("エラーが発生しました。しばらくお待ちください。")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "ul",
-            { staticClass: "photoList" },
-            _vm._l(_vm.images, function(image) {
-              return _c("li", [
-                _c(
-                  "a",
-                  {
-                    staticClass: "imageLink",
-                    attrs: { href: image.post_url, target: "_blank" }
-                  },
-                  [
-                    _c("img", {
-                      attrs: { src: image.post_image_url, alt: "" }
-                    }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "text" }, [
-                      _vm._v(
-                        "\n                                " +
-                          _vm._s(image.text) +
-                          "\n                            "
-                      )
-                    ])
-                  ]
-                )
-              ])
-            })
-          )
-        ])
+        _c(
+          "ul",
+          { staticClass: "photoList" },
+          _vm._l(_vm.images, function(image) {
+            return _c("li", [
+              _c(
+                "a",
+                {
+                  staticClass: "imageLink",
+                  attrs: { href: image.post_url, target: "_blank" }
+                },
+                [
+                  _c("img", { attrs: { src: image.post_image_url, alt: "" } }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "text" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(image.text) +
+                        "\n                        "
+                    )
+                  ])
+                ]
+              )
+            ])
+          })
+        )
       ])
     ])
   ])
@@ -17236,14 +17230,14 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
         sendMessage: function sendMessage() {
             var _this = this;
 
-            var apiName = '/send-message';
+            var apiName = 'send-message';
             this.is_success = false;
             this.is_error = false;
             this.is_system_error = false;
             this.is_loading = true;
             this.error_messages = [];
 
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post(apiName, {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('/' + apiName, {
                 name: this.name,
                 mail_address: this.mail_address,
                 message: this.message

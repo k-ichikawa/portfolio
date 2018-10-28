@@ -20,7 +20,7 @@
 
 <script>
     export default {
-        name: "Index",
+        name: "About",
         data () {
             return {
                 about_image: require("../../../../images/about_image.jpg")
