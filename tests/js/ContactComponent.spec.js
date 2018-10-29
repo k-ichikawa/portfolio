@@ -33,7 +33,11 @@ describe('ContactComponent', () => {
     });
     it('should contain which is お名前', () => {
         const vm = renderComponent(ContactComponent, {})
-        expect(vm.$el.textContent).toContain('お名前');
+        expect(vm.$el.textContent).toContain('お名前（姓）');
+    });
+    it('should contain which is お名前', () => {
+        const vm = renderComponent(ContactComponent, {})
+        expect(vm.$el.textContent).toContain('お名前（名）');
     });
     it('should contain which is メールアドレス', () => {
         const vm = renderComponent(ContactComponent, {})

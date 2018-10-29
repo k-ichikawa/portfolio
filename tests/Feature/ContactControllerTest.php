@@ -13,14 +13,18 @@ class ContactControllerTest extends TestCase
     public function testItCanSendMessage()
     {
         $input = [
-            'name'          => 'name',
+            'first_name'    => 'name',
+            'last_name'     => 'name',
             'mail_address'  => 'ichikawa.kenta0219@gmail.com',
             'message'       => 'message'
         ];
 
+        $full_name = 'name name';
+
         $inquiryRepositoryMock = $this->getMock();
 
         $inquiryRepositoryMock->shouldReceive('create')->once()->with($input)->andReturn();
+        $inquiryRepositoryMock->shouldReceive('getFullName')->once()->with($input['first_name'], $input['last_name'])->andReturn($full_name);
         DB::shouldReceive("beginTransaction")->andReturn();
         DB::shouldReceive("commit")->andReturn();
 
@@ -35,7 +39,8 @@ class ContactControllerTest extends TestCase
     public function testItCannotSendMessageByException()
     {
         $input = [
-            'name'          => 'name',
+            'first_name'    => 'name',
+            'last_name'     => 'name',
             'mail_address'  => 'ichikawa.kenta0219@gmail.com',
             'message'       => 'message'
         ];

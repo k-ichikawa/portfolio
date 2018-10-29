@@ -17199,6 +17199,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -17210,7 +17215,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
     name: "Contact",
     data: function data() {
         return {
-            'name': '',
+            'first_name': '',
+            'last_name': '',
             'mail_address': '',
             'message': '',
             'loading_image': __webpack_require__(53),
@@ -17238,13 +17244,15 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
             this.error_messages = [];
 
             __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('/' + apiName, {
-                name: this.name,
+                first_name: this.first_name,
+                last_name: this.last_name,
                 mail_address: this.mail_address,
                 message: this.message
             }).then(function (res) {
                 _this.is_loading = false;
                 if (res.data.result == true) {
-                    _this.name = '';
+                    _this.first_name = '';
+                    _this.last_name = '';
                     _this.mail_address = '';
                     _this.message = '';
                     _this.is_success = true;
@@ -17295,33 +17303,65 @@ var render = function() {
           : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "name" }, [
-          _c("h3", [_vm._v("お名前")]),
+          _c("h3", [_vm._v("お名前（姓）")]),
           _vm._v(" "),
           _c("input", {
             directives: [
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.name,
-                expression: "name"
+                value: _vm.last_name,
+                expression: "last_name"
               }
             ],
             staticClass: "inputText",
             attrs: { type: "text" },
-            domProps: { value: _vm.name },
+            domProps: { value: _vm.last_name },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.name = $event.target.value
+                _vm.last_name = $event.target.value
               }
             }
           }),
           _vm._v(" "),
-          _vm.hasError("name")
+          _vm.hasError("first_name")
             ? _c("span", { staticStyle: { color: "#DC143C" } }, [
-                _vm._v(_vm._s(_vm.getError("name")))
+                _vm._v(_vm._s(_vm.getError("first_name")))
+              ])
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "name" }, [
+          _c("h3", [_vm._v("お名前（名）")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.first_name,
+                expression: "first_name"
+              }
+            ],
+            staticClass: "inputText",
+            attrs: { type: "text" },
+            domProps: { value: _vm.first_name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.first_name = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _vm.hasError("last_name")
+            ? _c("span", { staticStyle: { color: "#DC143C" } }, [
+                _vm._v(_vm._s(_vm.getError("last_name")))
               ])
             : _vm._e()
         ]),

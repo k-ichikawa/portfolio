@@ -24,17 +24,23 @@ class SendMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'          => 'required|max:255',
+            'first_name'    => 'required|max:255',
+            'last_name'     => 'required|max:255',
             'mail_address'  => 'required|email',
             'message'       => 'required'
         ];
     }
 
+    /**
+     * @return array
+     */
     public function messages()
     {
         return [
-            'name.required'             => '必ず入力してください。',
-            'name.max'                  => 'お名前は255文字以内で入力してください。',
+            'first_name.required'       => '必ず入力してください。',
+            'first_name.max'            => 'お名前は255文字以内で入力してください。',
+            'last_name.required'        => '必ず入力してください。',
+            'last_name.max'             => 'お名前は255文字以内で入力してください。',
             'mail_address.required'     => '必ず入力してください。',
             'mail_address.email'        => 'メールアドレス形式で入力してください。',
             'message.required'          => '必ず入力してください。',

@@ -35,4 +35,14 @@ class InquiryRepository extends BaseRepository
     {
         return $this->model->create($input);
     }
+
+    /**
+     * @param string $first_name
+     * @param string $last_name
+     * @return string
+     */
+    public function getFullName($first_name, $last_name)
+    {
+        return $first_name . ' ' . $last_name;
+    }
 }

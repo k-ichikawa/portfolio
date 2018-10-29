@@ -21,12 +21,14 @@ class InquiryRepositoryTest extends TestCase
 
     public function testItCanCreate()
     {
-        $name           = 'name';
+        $first_name     = 'kenta';
+        $last_name      = 'ichikawa';
         $mail_address   = 'ichikawa.kenta0219@gmail.com';
         $message        = 'message';
 
         $input = [
-            'name'          => $name,
+            'first_name'    => $first_name,
+            'last_name'     => $last_name,
             'mail_address'  => $mail_address,
             'message'       => $message
         ];
@@ -35,9 +37,21 @@ class InquiryRepositoryTest extends TestCase
         $created_inquiry = $repository->create($input);
 
         $this->assertEquals($created_inquiry->id, 1);
-        $this->assertEquals($created_inquiry->name, $name);
+        $this->assertEquals($created_inquiry->first_name, $first_name);
+        $this->assertEquals($created_inquiry->last_name, $last_name);
         $this->assertEquals($created_inquiry->mail_address, $mail_address);
         $this->assertEquals($created_inquiry->message, $message);
+    }
+
+    public function testItCanGetFullName()
+    {
+        $first_name = 'kenta';
+        $last_name  = 'ichikawa';
+
+        $repository = $this->makeInstance();
+        $result = $repository->getFullName($first_name, $last_name);
+
+        $this->assertEquals('kenta ichikawa', $result);
     }
 
     /**

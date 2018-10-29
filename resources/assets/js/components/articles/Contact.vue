@@ -5,9 +5,14 @@
             <div class="explain">
                 <span v-if="is_error" style="color: #DC143C">※正しく入力をお願いいたします。</span>
                 <div class="name">
-                    <h3>お名前</h3>
-                    <input type="text" v-model="name" class="inputText">
-                    <span v-if="hasError('name')" style="color: #DC143C">{{ getError('name') }}</span>
+                    <h3>お名前（姓）</h3>
+                    <input type="text" v-model="last_name" class="inputText">
+                    <span v-if="hasError('first_name')" style="color: #DC143C">{{ getError('first_name') }}</span>
+                </div>
+                <div class="name">
+                    <h3>お名前（名）</h3>
+                    <input type="text" v-model="first_name" class="inputText">
+                    <span v-if="hasError('last_name')" style="color: #DC143C">{{ getError('last_name') }}</span>
                 </div>
                 <div class="mailAddress">
                     <h3>メールアドレス</h3>
@@ -47,7 +52,8 @@
         name: "Contact",
         data () {
             return {
-                'name': '',
+                'first_name': '',
+                'last_name': '',
                 'mail_address': '',
                 'message': '',
                 'loading_image': require("../../../../images/loading.gif"),
@@ -72,13 +78,15 @@
                 this.error_messages = [];
 
                 axios.post('/' + apiName, {
-                    name: this.name,
+                    first_name: this.first_name,
+                    last_name: this.last_name,
                     mail_address: this.mail_address,
                     message: this.message
                 }).then((res) => {
                     this.is_loading = false;
                     if (res.data.result == true) {
-                        this.name = '';
+                        this.first_name = '';
+                        this.last_name = '';
                         this.mail_address = '';
                         this.message = '';
                         this.is_success = true;

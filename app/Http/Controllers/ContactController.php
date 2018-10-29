@@ -23,7 +23,8 @@ class ContactController extends BaseController
     public function sendMessage(SendMessageRequest $request)
     {
         $input = [
-            'name'          => $request->get('name'),
+            'first_name'    => $request->get('first_name'),
+            'last_name'     => $request->get('last_name'),
             'mail_address'  => $request->get('mail_address'),
             'message'       => $request->get('message')
         ];
@@ -33,8 +34,13 @@ class ContactController extends BaseController
             $this->inquiryRepository->create($input);
             DB::commit();
 
-            Mail::to(env('MAIL_TO_ADDRESS'))
-                ->send(new ContactNotification($input));
+            $info = [
+                'full_name'     => $this->inquiryRepository->getFullName($input['first_name'], $input['last_name']),
+                'mail_address'  => $input['mail_address'],
+                'message'       => $input['message']
+            ];
+
+            Mail::to(env('MAIL_TO_ADDRESS'))->send(new ContactNotification($info));
 
             return json_encode(['result' => true]);
         } catch (\PDOException $e) {
