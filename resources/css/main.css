@@ -49,6 +49,10 @@ body {
 	font-family: 'EB Garamond', serif;
 }
 
+.menu li .active {
+	background-color: #eeeeee;
+}
+
 article h1 {
 	margin-top: 15px;
 	margin-bottom: 15px;
