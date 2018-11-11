@@ -61,7 +61,6 @@
                         <p class="timeline-date">2018年10月</p>
                         <div class="timeline-content">
                             <h3>アライドアーキテクツ株式会社 退職</h3>
-                            <p>開発スキルが付いたので、自分が好きなサービスに関われる仕事を探し中</p>
                         </div>
                     </li>
                 </ul>

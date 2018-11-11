@@ -15848,13 +15848,7 @@ var staticRenderFns = [
               _c("p", { staticClass: "timeline-date" }, [_vm._v("2018年10月")]),
               _vm._v(" "),
               _c("div", { staticClass: "timeline-content" }, [
-                _c("h3", [_vm._v("アライドアーキテクツ株式会社 退職")]),
-                _vm._v(" "),
-                _c("p", [
-                  _vm._v(
-                    "開発スキルが付いたので、自分が好きなサービスに関われる仕事を探し中"
-                  )
-                ])
+                _c("h3", [_vm._v("アライドアーキテクツ株式会社 退職")])
               ])
             ])
           ])
