@@ -82,6 +82,5 @@ class crawlInstagramPostInfo extends Command
 
             $this->instagramUserPostRepository->updateOrCreate(['post_url' => $post['link']], $input);
         }
-        print_r('hello');
     }
 }
