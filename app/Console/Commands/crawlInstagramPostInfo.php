@@ -76,10 +76,12 @@ class crawlInstagramPostInfo extends Command
                 'post_url'          => $post['link'],
                 'post_image_url'    => $post['images']['standard_resolution']['url'],
                 'like_count'        => $post['likes']['count'],
-                'posted_at'         => date("Y-m-d h:i:s", $post['created_time'])
+                'posted_at'         => date("Y-m-d h:i:s", $post['created_time']),
+                'updated_at'        => date("now")
             ];
 
             $this->instagramUserPostRepository->updateOrCreate(['post_url' => $post['link']], $input);
         }
+        print_r('hello');
     }
 }
