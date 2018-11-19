@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width">
     <meta property="og:title" content="icchy profile">
     <meta property="og:type" content="website">
-    <meta property="og:description" content="市川のプロフィールです。">
+    <meta property="og:description" content="icchyのプロフィールです。">
     <meta property="og:url" content="{{ route('app') }}">
     <meta property="og:site_name" content="icchy profile">
     <meta property="og:image" content="{{ asset('images/ogimage.jpg') }}">
