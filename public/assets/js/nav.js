@@ -15608,7 +15608,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "explain" }, [
-      _c("h2", [_vm._v("icchy")]),
+      _c("h2", [_vm._v("icchy（イッチー）")]),
       _vm._v(" "),
       _c("p", { staticClass: "sentence" }, [
         _vm._v("93年2月生, B型, 千葉県出身, 神奈川県在住")
