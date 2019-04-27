@@ -16,7 +16,7 @@
                         <p class="timeline-date">2005年4月</p>
                         <div class="timeline-content">
                             <h3>中学生時代</h3>
-                            <p>そこそこセンスがあったため、卓球部に入る。レギュラーなのに緊張体質で試合で勝てず。<br>家にPCが導入され、ブログや掲示板等、世の中に発信することを覚える。<br>カードゲームやテレビゲームにドハマり<br>奇跡的に彼女が出来る。</p>
+                            <p>卓球部に入りレギュラーになるも、緊張体質で試合で勝てず。<br>家にPCが導入され、ブログや掲示板等、世の中に発信することを覚える。<br>カードゲームやテレビゲームにドハマり<br>奇跡的に彼女が出来る。</p>
                         </div>
                     </li>
                     <li>
@@ -49,20 +49,20 @@
                     </li>
                 </ul>
             </div>
-            <div class="explain">
-                <h2>Recently Instagram Photos</h2>
-                <p v-if="is_system_error" style="color: #DC143C">エラーが発生しました。しばらくお待ちください。</p>
-                <ul class="photoList">
-                    <li v-for="image in images">
-                        <a :href="image.post_url" class="imageLink" target="_blank">
-                            <img :src="image.post_image_url" alt="">
-                            <div class="text">
-                                {{ image.text }}
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <!--<div class="explain">-->
+                <!--<h2>Recently Instagram Photos</h2>-->
+                <!--<p v-if="is_system_error" style="color: #DC143C">エラーが発生しました。しばらくお待ちください。</p>-->
+                <!--<ul class="photoList">-->
+                    <!--<li v-for="image in images">-->
+                        <!--<a :href="image.post_url" class="imageLink" target="_blank">-->
+                            <!--<img :src="image.post_image_url" alt="">-->
+                            <!--<div class="text">-->
+                                <!--{{ image.text }}-->
+                            <!--</div>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
         </article>
     </div>
 </template>
@@ -83,7 +83,7 @@
             }
         },
         mounted() {
-            this.fetchInstagramImages()
+            // this.fetchInstagramImages()
         },
         methods: {
             fetchInstagramImages() {

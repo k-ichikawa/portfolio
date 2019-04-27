@@ -10,7 +10,7 @@
                     <p class="sentence">"イッチー", "ケンシロー"などと呼ばれている。webエンジニア</p>
 
                     <h2>Skill</h2>
-                    <p class="sentence">Work：PHP（Laravel）, javascript（Vue, jQuery）</p>
+                    <p class="sentence">Work：PHP（Laravel, Symfony）, javascript（Vue, jQuery）</p>
                     <p class="sentence">Hobby：Ruby（Rails）, Google Apps Script</p>
                 </div>
             </article>

@@ -15621,7 +15621,7 @@ var staticRenderFns = [
       _c("h2", [_vm._v("Skill")]),
       _vm._v(" "),
       _c("p", { staticClass: "sentence" }, [
-        _vm._v("Work：PHP（Laravel）, javascript（Vue, jQuery）")
+        _vm._v("Work：PHP（Laravel, Symfony）, javascript（Vue, jQuery）")
       ]),
       _vm._v(" "),
       _c("p", { staticClass: "sentence" }, [
@@ -15850,6 +15850,14 @@ var staticRenderFns = [
               _c("div", { staticClass: "timeline-content" }, [
                 _c("h3", [_vm._v("アライドアーキテクツ株式会社 退職")])
               ])
+            ]),
+            _vm._v(" "),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2019年1月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("株式会社ヴォーカーズ 入社")])
+              ])
             ])
           ])
         ])
@@ -16010,7 +16018,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_
         };
     },
     mounted: function mounted() {
-        this.fetchInstagramImages();
+        // this.fetchInstagramImages()
     },
 
     methods: {
@@ -16918,168 +16926,133 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "articleBox" }, [
-    _c("article", [
-      _c("h1", [_vm._v("PRIVATE")]),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { staticClass: "explain" }, [
-        _c("h2", [_vm._v("Recently Instagram Photos")]),
-        _vm._v(" "),
-        _vm.is_system_error
-          ? _c("p", { staticStyle: { color: "#DC143C" } }, [
-              _vm._v("エラーが発生しました。しばらくお待ちください。")
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "ul",
-          { staticClass: "photoList" },
-          _vm._l(_vm.images, function(image) {
-            return _c("li", [
-              _c(
-                "a",
-                {
-                  staticClass: "imageLink",
-                  attrs: { href: image.post_url, target: "_blank" }
-                },
-                [
-                  _c("img", { attrs: { src: image.post_image_url, alt: "" } }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "text" }, [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(image.text) +
-                        "\n                        "
-                    )
-                  ])
-                ]
-              )
-            ])
-          })
-        )
-      ])
-    ])
-  ])
+  return _vm._m(0)
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "explain" }, [
-      _c("h2", [_vm._v("プライベートの略歴")]),
-      _vm._v(" "),
-      _c("ul", { staticClass: "timeline" }, [
-        _c("li", [
-          _c("p", { staticClass: "timeline-date" }, [_vm._v("1999年4月")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "timeline-content" }, [
-            _c("h3", [_vm._v("小学生時代")]),
-            _vm._v(" "),
-            _c("p", [
-              _vm._v("ポケモンを通じて初めて友達が出来る。"),
-              _c("br"),
-              _vm._v("野球をするのが好きだった。")
-            ])
-          ])
-        ]),
+    return _c("div", { staticClass: "articleBox" }, [
+      _c("article", [
+        _c("h1", [_vm._v("PRIVATE")]),
         _vm._v(" "),
-        _c("li", [
-          _c("p", { staticClass: "timeline-date" }, [_vm._v("2005年4月")]),
+        _c("div", { staticClass: "explain" }, [
+          _c("h2", [_vm._v("プライベートの略歴")]),
           _vm._v(" "),
-          _c("div", { staticClass: "timeline-content" }, [
-            _c("h3", [_vm._v("中学生時代")]),
+          _c("ul", { staticClass: "timeline" }, [
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("1999年4月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("小学生時代")]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v("ポケモンを通じて初めて友達が出来る。"),
+                  _c("br"),
+                  _vm._v("野球をするのが好きだった。")
+                ])
+              ])
+            ]),
             _vm._v(" "),
-            _c("p", [
-              _vm._v(
-                "そこそこセンスがあったため、卓球部に入る。レギュラーなのに緊張体質で試合で勝てず。"
-              ),
-              _c("br"),
-              _vm._v(
-                "家にPCが導入され、ブログや掲示板等、世の中に発信することを覚える。"
-              ),
-              _c("br"),
-              _vm._v("カードゲームやテレビゲームにドハマり"),
-              _c("br"),
-              _vm._v("奇跡的に彼女が出来る。")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("p", { staticClass: "timeline-date" }, [_vm._v("2008年4月")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "timeline-content" }, [
-            _c("h3", [_vm._v("高校生時代")]),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2005年4月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("中学生時代")]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "卓球部に入りレギュラーになるも、緊張体質で試合で勝てず。"
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "家にPCが導入され、ブログや掲示板等、世の中に発信することを覚える。"
+                  ),
+                  _c("br"),
+                  _vm._v("カードゲームやテレビゲームにドハマり"),
+                  _c("br"),
+                  _vm._v("奇跡的に彼女が出来る。")
+                ])
+              ])
+            ]),
             _vm._v(" "),
-            _c("p", [
-              _c(
-                "a",
-                { attrs: { href: "https://ws-tcg.com/", target: "_blank" } },
-                [_vm._v("ヴァイスシュヴァルツ")]
-              ),
-              _vm._v("、"),
-              _c(
-                "a",
-                {
-                  attrs: {
-                    href: "http://www.capcom.co.jp/monsterhunter/P2ndG/",
-                    target: "_blank"
-                  }
-                },
-                [_vm._v("モンスターハンター2ndG")]
-              ),
-              _vm._v("に明け暮れる。"),
-              _c("br"),
-              _vm._v("Perfumeにハマり、ライブに行くようになる。")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("p", { staticClass: "timeline-date" }, [_vm._v("2011年4月")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "timeline-content" }, [
-            _c("h3", [_vm._v("大学生時代（前）")]),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2008年4月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("高校生時代")]),
+                _vm._v(" "),
+                _c("p", [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "https://ws-tcg.com/", target: "_blank" }
+                    },
+                    [_vm._v("ヴァイスシュヴァルツ")]
+                  ),
+                  _vm._v("、"),
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href: "http://www.capcom.co.jp/monsterhunter/P2ndG/",
+                        target: "_blank"
+                      }
+                    },
+                    [_vm._v("モンスターハンター2ndG")]
+                  ),
+                  _vm._v("に明け暮れる。"),
+                  _c("br"),
+                  _vm._v("Perfumeにハマり、ライブに行くようになる。")
+                ])
+              ])
+            ]),
             _vm._v(" "),
-            _c("p", [
-              _vm._v(
-                "大学までが遠いため、学内でカードゲームをしたくなりサークルを立ち上げる。"
-              ),
-              _c("br"),
-              _vm._v("カードゲーム、アルバイト、アニメを繰り返す毎日")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("p", { staticClass: "timeline-date" }, [_vm._v("2013年4月")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "timeline-content" }, [
-            _c("h3", [_vm._v("大学生時代（後）")]),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2011年4月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("大学生時代（前）")]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "大学までが遠いため、学内でカードゲームをしたくなりサークルを立ち上げる。"
+                  ),
+                  _c("br"),
+                  _vm._v("カードゲーム、アルバイト、アニメを繰り返す毎日")
+                ])
+              ])
+            ]),
             _vm._v(" "),
-            _c("p", [
-              _vm._v(
-                "アルバイトやインターン、ゼミなどで異性との交流が増え、髪型や服装を気にし始める。"
-              )
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("p", { staticClass: "timeline-date" }, [_vm._v("2016年4月")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "timeline-content" }, [
-            _c("h3", [_vm._v("社会人〜現在")]),
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2013年4月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("大学生時代（後）")]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "アルバイトやインターン、ゼミなどで異性との交流が増え、髪型や服装を気にし始める。"
+                  )
+                ])
+              ])
+            ]),
             _vm._v(" "),
-            _c("p", [
-              _vm._v(
-                "暇があるとカードゲームとyoutube視聴とスプラトゥーンのどれかをしている。"
-              ),
-              _c("br"),
-              _vm._v("日本語ラップにハマっている。")
+            _c("li", [
+              _c("p", { staticClass: "timeline-date" }, [_vm._v("2016年4月")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "timeline-content" }, [
+                _c("h3", [_vm._v("社会人〜現在")]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "暇があるとカードゲームとyoutube視聴とスプラトゥーンのどれかをしている。"
+                  ),
+                  _c("br"),
+                  _vm._v("日本語ラップにハマっている。")
+                ])
+              ])
             ])
           ])
         ])

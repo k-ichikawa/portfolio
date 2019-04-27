@@ -63,6 +63,12 @@
                             <h3>アライドアーキテクツ株式会社 退職</h3>
                         </div>
                     </li>
+                    <li>
+                        <p class="timeline-date">2019年1月</p>
+                        <div class="timeline-content">
+                            <h3>株式会社ヴォーカーズ 入社</h3>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </article>
